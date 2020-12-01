@@ -8,7 +8,7 @@ Building a supervised machine learning model to predict the Human Development In
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#project-overview">Project Overview</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
       </ul>
@@ -30,12 +30,24 @@ Building a supervised machine learning model to predict the Human Development In
 </details>
 
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
+<!-- PROJECT OVERVIEW -->
+## Project Overview
 
-The World Bank has a massive database called World Development Indicators (WDI). This data is free and open to the public for use. The WDI database contains a vast array of socioeconomic indicators related to population, GDP, education, human rights, environment, and so on. The WDI is one of the most significant international databases and contains around 1300 indicators for almost every country in the world, with the earliest indicators starting in 1960 (Van Der Mensbrugghe, 2016). 
+The World Bank has a massive database called the World Development Indicators (WDI). According to the World Bank, the WDI are a "compilation of cross-country, relevant, high-quality, and internationally comparable statistics about global development and the fight against poverty." This data is free and open to the public for use. The WDI database contains a vast array of socioeconomic indicators related to population, GDP, education, health, human rights, labor, trade, land use, and so on. It is used by The WDI is one of the most significant international databases and contains around 1300 indicators for almost every country in the world, with the earliest indicators starting in 1960 (Van Der Mensbrugghe, 2016). 
 
-The United Nations Development Programme (UNDP) collects and stores international data for monitoring and reporting on multiple human development indices, such as poverty, gender equality, sustainability, and so on. This project will focus on prediicting the Human Development Index (HDI) by merging WDI and UNDP data, analyzing for correlation, and using variables to build a random forest prediction model.
+The United Nations Development Programme (UNDP) collects and stores international data for monitoring and reporting on multiple human development indices, such as poverty, gender equality, sustainability, and so on. This project will focus on prediicting the Human Development Index (HDI). According the the UNDP, "the HDI was created to emphasize that people and their capabilities should be the ultimate criteria for assessing the development of a country, not economic growth alone."
+
+The entire project will be completed in R and will consist of 3 key steps:
+<ol>
+    <li>
+      1. Data Engineering: merging these two datasets, 
+      <ul>
+        analyzing for correlation, 
+      <ul>
+      using variables to build a random forest prediction model.
+    </ul>
+    </li>
+    <li>
 
 
 ACCESSING WORLD BANK WORLD DEVELOPMENT INDICATOR DATA
