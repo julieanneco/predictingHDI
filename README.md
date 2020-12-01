@@ -8,7 +8,7 @@ Under Construction
 
 
 <!-- TABLE OF CONTENTS -->
-<i>Table of Contents</i>
+<i><b>Table of Contents</i></b>
   <ol>
     <li><a href="#project-overview">Project Overview</a>
     <li><a href="#getting-started">Getting Started</a>
