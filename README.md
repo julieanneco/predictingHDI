@@ -52,10 +52,12 @@ Each indicator has a vector code that is used for querying and downloading funct
 
 <details open="open">
 The WDI library is installed and loaded like any other package
+</details>
+
+
 ```r
 library(WDI)
 ```
-</details>
 
 
 <!-- ROADMAP -->
