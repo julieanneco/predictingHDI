@@ -39,9 +39,9 @@ The United Nations Development Programme (UNDP) collects and stores internationa
 
 The entire project will be completed in R and will consist of 3 key steps:
 <ol>
-  <li>Data Engineering: Scraping, merging, cleaning, and transforming data. </li>
-  <li>Exploratory Data Analysis: Analyzing variables for correlation and regression to build final data frame(s). </li>
-  <li>Building a Prediction Model: Using final variables to build a random forest prediction model.</li>
+  <li><b>Data Engineering:</b> Scraping, merging, cleaning, and transforming data. </li>
+  <li><b>Exploratory Data Analysis:</b> Analyzing variables for correlation and regression to build final data frame(s). </li>
+  <li><b>Building a Prediction Model:</b> Using final variables to build a random forest prediction model.</li>
 </ol>
 
 <!-- GETTING STARTED -->
