@@ -12,9 +12,11 @@ Under Construction
     <li><a href="#Project-Overview">Project Overview</a>
     <li><a href="#Data-Engineering">Data Engineering</a></li>
     <li><a href="#Exploratory-Data-Analysis">Exploratory Data Analysis</a></li>
-    <li><a href="#license">License</a></li>
+    <li><a href="#Building-Prediction-Models">Building Prediction Models</a></li>
+    <li><a href="#results">Results</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
+    <li><a href="#references">References</a></li>
   </ol>
 
 
@@ -57,22 +59,23 @@ library(WDI)
 Data analysis and variable regression. 
 
 
-<!-- ROADMAP -->
-## Random Forest Prediction Models
+<!-- Building Prediction Models -->
+## Building Prediction Models
 
 Building the models.
+
+<!-- Results -->
 
 ## Results
 ![alt text](https://github.com/julieanneco/predictingHDI/blob/photos/RF-R-Results.jpg?raw=true)
 
 
-<!-- CONTACT -->
+<!-- Contact -->
 ## Contact
 
 Julie Anne Hockensmith
 
 Project Link: [link](link)
-
 
 
 <!-- ACKNOWLEDGEMENTS -->
