@@ -45,16 +45,15 @@ Re-reqs and installs
 <b>Scraping, Transforming, Joining, and Cleaning.</b>
 
 
-#Using the API to scrape WDI data
+<details open="open">
+<summary>Using the API to scrape WDI data</summary>
 There are two methods for accessing WDI. The first is to directly use the World Bank’s web-based graphical user interface (GUI).1 The user points and clicks with a mouse to select countries, indicators and years. The selected data can then be downloaded in alternative formats, for example Excel. This access method is fine for the occasional use of WDI but quickly becomes tedious for large selections and/or when access is routine. The second method uses a so-called Application Programming Interface (API) that can be embedded in computer code to programmatically extract data from WDI. The API requires inputs—selected countries, indicators and years—and returns the desired data ’cube’. The API has been integrated into an R package2 that simplifies the extraction process and allows for the downloaded data to be directly treated in R or to be saved as a datafile for use with another programming environment. 
 
 Each indicator has a vector code that is used for querying and downloading functions within R. There are several ways to find the vector codes for specfic indicators or indicators containing a keyword. In R, you can use the WDIsearch() function. You can also use the worldbank report creator or data dictionary to find specific indicators. To get a list of all indicators, you can use the function WDIcache(), however, R Studio will omit many rows from view.
-
-<details open="open">
- <summary>The WDI library is installed and loaded like any other package</summary>
 </details>
 
 
+The WDI library is installed and loaded like any other package
 ```r
 library(WDI)
 ```
