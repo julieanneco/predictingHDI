@@ -4,26 +4,14 @@ Under Construction
 <b>Building a supervised machine learning model to predict the Human Development Index (HDI) based on World Development Indicators (WDI) and UNDP Data.</b>
 <p>
 
-<img align="right" src="https://github.com/julieanneco/predictingHDI/blob/photos/map.png?raw=true" alt="world map" width="800" >
+<img align="right" src="https://github.com/julieanneco/predictingHDI/blob/photos/map.png?raw=true" alt="world map" width="700" >
 
 
 <!-- TABLE OF CONTENTS -->
-<details open="open">
   <summary>Table of Contents</summary>
   <ol>
-    <li>
-      <a href="#project-overview">Project Overview</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
+    <li><a href="#project-overview">Project Overview</a>
+    <li><a href="#getting-started">Getting Started</a>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#Data Engineering">Data Engineering</a></li>
     <li><a href="#contributing">Contributing</a></li>
@@ -31,7 +19,6 @@ Under Construction
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
-</details>
 
 
 <!-- PROJECT OVERVIEW -->
@@ -63,12 +50,12 @@ There are two methods for accessing WDI. The first is to directly use the World 
 
 Each indicator has a vector code that is used for querying and downloading functions within R. There are several ways to find the vector codes for specfic indicators or indicators containing a keyword. In R, you can use the WDIsearch() function. You can also use the worldbank report creator or data dictionary to find specific indicators. To get a list of all indicators, you can use the function WDIcache(), however, R Studio will omit many rows from view.
 
-
+<details open="open">
 The WDI library is installed and loaded like any other package
 ```r
 library(WDI)
 ```
-
+</details>
 
 
 <!-- ROADMAP -->
