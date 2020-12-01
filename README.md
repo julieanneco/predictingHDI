@@ -1,8 +1,7 @@
-# Predicting Human Development Index
+# Predicting Human Development Index with Random Forest
 Under Construction
 
-Predicting Human Development Index (HDI) using World Development Indicators (WDI) and UNDP Data.
-![alt text](https://github.com/julieanneco/predictingHDI/blob/photos/RF-R-Results.jpg?raw=true)
+Building a supervised machine learning model to predict the Human Development Index (HDI) based on World Development Indicators (WDI) and UNDP Data.
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
@@ -22,7 +21,7 @@ Predicting Human Development Index (HDI) using World Development Indicators (WDI
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#Data Engineering">Data Engineering</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -31,11 +30,25 @@ Predicting Human Development Index (HDI) using World Development Indicators (WDI
 </details>
 
 
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-About
+The World Bank has a massive database called World Development Indicators (WDI). This data is free and open to the public for use. The WDI database contains a vast array of socioeconomic indicators related to population, GDP, education, human rights, environment, and so on. The WDI is one of the most significant international databases and contains around 1300 indicators for almost every country in the world, with the earliest indicators starting in 1960 (Van Der Mensbrugghe, 2016). 
+
+The United Nations Development Programme (UNDP) collects and stores international data for monitoring and reporting on multiple human development indices, such as poverty, gender equality, sustainability, and so on. This project will focus on prediicting the Human Development Index (HDI) by merging WDI and UNDP data, analyzing for correlation, and using variables to build a random forest prediction model.
+
+
+ACCESSING WORLD BANK WORLD DEVELOPMENT INDICATOR DATA
+
+There are two methods for accessing WDI. The first is to directly use the World Bank’s web-based graphical user interface (GUI).1 The user points and clicks with a mouse to select countries, indicators and years. The selected data can then be downloaded in alternative formats, for example Excel. This access method is fine for the occasional use of WDI but quickly becomes tedious for large selections and/or when access is routine. The second method uses a so-called Application Programming Interface (API) that can be embedded in computer code to programmatically extract data from WDI. The API requires inputs—selected countries, indicators and years—and returns the desired data ’cube’. The API has been integrated into an R package2 that simplifies the extraction process and allows for the downloaded data to be directly treated in R or to be saved as a datafile for use with another programming environment. 
+
+Each indicator has a vector code that is used for querying and downloading functions within R. There are several ways to find the vector codes for specfic indicators or indicators containing a keyword. In R, you can use the WDIsearch() function. You can also use the worldbank report creator or data dictionary to find specific indicators. To get a list of all indicators, you can use the function WDIcache(), however, R Studio will omit many rows from view.
+
+
+The WDI library is installed and loaded like any other package
+```r
+library(WDI)
+```
 
 
 <!-- GETTING STARTED -->
@@ -43,75 +56,11 @@ About
 
 Re-reqs and installs
 
-<!-- ROADMAP -->
+<!-- Data Engineering -->
 ## Data Engineering
+<b>Scraping, Transforming, Joining, and Cleaning.</b>
 
-Scraping, Transforming, Joinging, and Cleaning. 
 
-```r
-##Download data (years 1990-2018) for various indicators to analyze. These WDI functions will put the data into individual data frames.
-library(WDI)
-# Population 	
-population = WDI(indicator='SP.POP.TOTL', country="all",start=1990, end=2018)
-# GDP (USD)
-gdp = WDI(indicator='NY.GDP.MKTP.CD', country="all",start=1990, end=2018)
-# GDP per capita (constant 2010 US$)	
-gdp.pc = WDI(indicator='NY.GDP.PCAP.KD', country="all",start=1990, end=2018)
-# GDP Per capita income
-gdp.pc.income = WDI(indicator='NY.GDP.PCAP.PP.CD', country="all",start=1990, end=2018)
-# Population density (people per sq. km of land area)	
-pop.density = WDI(indicator='EN.POP.DNST', country="all",start=1990, end=2018)
-# Greenhouse Gas Emissions (kt)
-greenhouse.gas = WDI(indicator='EN.ATM.GHGT.KT.CE', country="all",start=1990, end=2018)
-# Methane emissions (kt of CO2 equivalent)	
-methane.emis = WDI(indicator='EN.ATM.METH.KT.CE', country="all",start=1990, end=2018)
-# Total C02 emissions (kt)
-co2 = WDI(indicator='EN.ATM.CO2E.KT', country="all",start=1990, end=2018) 
-# CO2 emissions (metric tons per capita)
-co2.pc = WDI(indicator='EN.ATM.CO2E.PC', country="all",start=1990, end=2018)
-# PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)	
-pollution.expose = WDI(indicator='EN.ATM.PM25.MC.M3', country="all",start=1990, end=2018)
-# Agricultural land (% of land area)	
-agri.land = WDI(indicator='AG.LND.AGRI.ZS', country="all",start=1990, end=2018)
-# Agricultural methane emissions (thousand metric tons of CO2 equivalent)	
-agri.methane = WDI(indicator='EN.ATM.METH.AG.KT.CE', country="all",start=1990, end=2018)
-# Birth rate, crude (per 1,000 people)	
-birth.rate = WDI(indicator='SP.DYN.CBRT.IN', country="all",start=1990, end=2018)
-# Fertility rate, total (births per woman)	
-fertility.rate = WDI(indicator='SP.DYN.TFRT.IN', country="all",start=1990, end=2018)
-# Imports of goods and services (% of GDP)	
-imports.gs = WDI(indicator='NE.IMP.GNFS.ZS', country="all",start=1990, end=2018)
-# Exports of goods and services (% of GDP)	
-exports.gs = WDI(indicator='NE.EXP.GNFS.ZS', country="all",start=1990, end=2018)
-# International tourism, number of arrivals	
-tourist.arrivals = WDI(indicator='ST.INT.ARVL', country="all",start=1990, end=2018)
-# International tourism, expenditures (% of total imports)	
-toursit.exp = WDI(indicator='ST.INT.XPND.MP.ZS', country="all",start=1990, end=2018)
-# International tourism, receipts (current US$)	
-tourist.receipts = WDI(indicator='ST.INT.RCPT.CD', country="all",start=1990, end=2018)
-# Land area (sq. km)	
-land.area = WDI(indicator='AG.LND.TOTL.K2', country="all",start=1990, end=2018)
-# Life expectancy at birth, total (years)	
-life.exp = WDI(indicator='SP.DYN.LE00.IN', country="all",start=1990, end=2018)
-# Mortality rate, infant (per 1,000 live births)	
-infant.mort.rate = WDI(indicator='SP.DYN.IMRT.IN', country="all",start=1990, end=2018)
-# Mortality rate, under-5 (per 1,000 live births)	
-under5.mort.rate = WDI(indicator='SH.DYN.MORT', country="all",start=1990, end=2018)
-# Unemployment, total (% of total labor force) (modeled ILO estimate)	
-unemployment = WDI(indicator='SL.UEM.TOTL.ZS', country="all",start=1990, end=2018)
-# Adjusted net enrolment rate, lower secondary
-edu.lower = WDI(indicator='UIS.NERA.2', country="all",start=1990, end=2018)
-# Adjusted net enrolment rate, primary	
-edu.primary = WDI(indicator='SE.PRM.TENR', country="all",start=1990, end=2018)
-# Adjusted net enrolment rate, upper secondary
-edu.upper = WDI(indicator='UIS.NERA.3', country="all",start=1990, end=2018)
-# Adult literacy rate, population 15+ years, both sexes (%)	SE.ADT.LITR.ZS
-literacy = WDI(indicator='SE.ADT.LITR.ZS', country="all",start=1990, end=2018)
-# Initial government funding of education as a percentage of GDP (%)
-edu.funding = WDI(indicator='UIS.XGDP.FSGOV.FFNTR', country="all",start=1990, end=2018)
-#Expected Years Of School
-edu.years = WDI(indicator='HD.HCI.EYRS', country="all",start=1990, end=2018)
-```
 
 <!-- ROADMAP -->
 ## Exploratory Data Analysis
@@ -123,6 +72,9 @@ Data analysis and variable regression.
 ## Random Forest Prediction Models
 
 Building the models.
+
+## Results
+![alt text](https://github.com/julieanneco/predictingHDI/blob/photos/RF-R-Results.jpg?raw=true)
 
 
 <!-- CONTACT -->
@@ -137,3 +89,6 @@ Project Link: [link](link)
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 * [Package](link)
+
+## References
+https://pdfs.semanticscholar.org/d19f/09842ed6d44a4da9bc8043ec713f3b61c8b2.pdf
