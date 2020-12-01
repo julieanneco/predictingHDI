@@ -8,7 +8,7 @@ Under Construction
 
 
 <!-- TABLE OF CONTENTS -->
-Table of Contents
+<i>Table of Contents</i>
   <ol>
     <li><a href="#project-overview">Project Overview</a>
     <li><a href="#getting-started">Getting Started</a>
@@ -51,7 +51,7 @@ There are two methods for accessing WDI. The first is to directly use the World 
 Each indicator has a vector code that is used for querying and downloading functions within R. There are several ways to find the vector codes for specfic indicators or indicators containing a keyword. In R, you can use the WDIsearch() function. You can also use the worldbank report creator or data dictionary to find specific indicators. To get a list of all indicators, you can use the function WDIcache(), however, R Studio will omit many rows from view.
 
 <details open="open">
-The WDI library is installed and loaded like any other package
+ <summary>The WDI library is installed and loaded like any other package</summary>
 </details>
 
 
