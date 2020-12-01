@@ -5,6 +5,8 @@ Building a supervised machine learning model to predict the Human Development In
 
 ![alt text](https://github.com/julieanneco/predictingHDI/blob/photos/map.png?raw=true)
 
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/map.png?raw=true" alt="world map" width="300" >
+
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
