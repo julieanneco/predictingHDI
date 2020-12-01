@@ -27,7 +27,7 @@ The World Bank has a massive database called the World Development Indicators (W
 
 The United Nations Development Programme (UNDP) collects and stores international data for monitoring and reporting on multiple human development indices, such as poverty, gender equality, sustainability, and so on. This project will focus on prediicting the Human Development Index (HDI). According the the UNDP, "the HDI was created to emphasize that people and their capabilities should be the ultimate criteria for assessing the development of a country, not economic growth alone."
 
-The entire project will be completed in R and will consist of 3 key steps:
+The entire project is coded in R and consists of 3 key steps (each in seperate R Markdown files):
 <ol>
   <li><b>Data Engineering:</b> Scraping, merging, cleaning, and transforming data. </li>
   <li><b>Exploratory Data Analysis:</b> Analyzing variables for correlation and regression to build final data frame(s). </li>
