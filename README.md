@@ -9,11 +9,9 @@ Under Construction
 <!-- TABLE OF CONTENTS -->
 <b>Table of Contents</b>
   <ol>
-    <li><a href="#project-overview">Project Overview</a>
-    <li><a href="#getting-started">Getting Started</a>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#Data Engineering">Data Engineering</a></li>
-    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#Project-Overview">Project Overview</a>
+    <li><a href="#Data-Engineering">Data Engineering</a></li>
+    <li><a href="#Exploratory-Data-Analysis">Exploratory Data Analysis</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
@@ -34,11 +32,6 @@ The entire project will be completed in R and will consist of 3 key steps:
   <li><b>Building a Prediction Model:</b> Using final variables to build a random forest prediction model.</li>
 </ol>
 
-<!-- GETTING STARTED -->
-## Getting Started
-
-Re-reqs and installs
-
 <!-- Data Engineering -->
 ## Data Engineering
 <b>Scraping, Transforming, Joining, and Cleaning.</b>
@@ -58,7 +51,7 @@ library(WDI)
 ```
 
 
-<!-- ROADMAP -->
+<!-- Exploratory Data Analysis -->
 ## Exploratory Data Analysis
 
 Data analysis and variable regression. 
