@@ -52,12 +52,12 @@ The WDI library is installed and loaded like any other package
 library(WDI)
 ```
 
-To begin, I will create a dataframe for each indicator I'd like to analyze. I have selected the years 1990 to 2018 because data is more sparse in earlier years. By creating a seperate dataframe for each indicator, I am able to more easily analyze and update each one. However, it is possible to create a single dataframe for all indicators with the code:
+To create the final dataframe(s), I first created an individual dataframe for each indicator I wanted to analyze. I selected the years 1990 to 2018 because data is more sparse in earlier years. By creating a seperate dataframe for each indicator, I was able to more easily analyze and update each one as needed throughout the process. However, it is possible to create a single dataframe for all indicators with the code:
 ```r
 dataframe = WDI(country="all", indicator= c("vector code","vector code", etc.),start=year, end=year)
 ```
 
-Use WDI functions to download the following indicators from the API into individual data frames.
+I used WDI API functions to download the following indicators:
 ```r
 # Population 	
 population = WDI(indicator='SP.POP.TOTL', country="all",start=1990, end=2018)
@@ -121,8 +121,9 @@ edu.funding = WDI(indicator='UIS.XGDP.FSGOV.FFNTR', country="all",start=1990, en
 edu.years = WDI(indicator='HD.HCI.EYRS', country="all",start=1990, end=2018)
 ```
 
-<b>Cleaning the Data</b>
-The API function only downloads each indicator with the region, country code, indicator vector code. To prepare and clean the data, I will rename the indicator column to a recognizable name.
+<b>Preparing the Data for Analysis</b>
+
+The API function only downloads each indicator with the region, country code, and indicator vector code. To prepare and clean the data, I renamed the indicator column to a recognizable name.
 ```r
 names(population)[3]="population"
 names(gdp.pc)[3]="gdp.pc"
@@ -148,7 +149,7 @@ names(edu.funding)[3]="edu.funding"
 names(edu.years)[3]="edu.years"
 ```
 
-### Check for occurence of null values
+Check for occurence of null values
 ```{r}
 colSums(is.na(population))
 colSums(is.na(gdp.pc))
@@ -173,14 +174,10 @@ colSums(is.na(literacy))
 colSums(is.na(edu.funding))
 ```
 
-### Given the range of NULL values, I will create 2 seperate dataframes. In my first dataframe for key economic and climate indicators, I will not include any with high NULL counts, which I will define as over 1150 (15% NULL) -- greenhouse gas, methane emmission, pollution exposure, and agricultural methane.
+Given the range of NULL values, I will create 2 seperate dataframes. In my first dataframe for key economic and climate indicators, I will not include any with high NULL counts, which I will define as over 1150 (15% NULL) -- greenhouse gas, methane emmission, pollution exposure, and agricultural methane.
 
-###For the 2nd data frame I will focus on tourism, using tourist arrivals, tourist expenditures, and tourist receipts, along with some key economic and climate indicators: GDP, GDP per capita, GDP per capita income, CO2, CO2 per capita, population, population density, and unemployment. 
-
-
-## Data Frame 1: Key Economic and Climate Indicators
-#### Join the individual data frames to create a single dataframe with all downloaded indicators 
-```{r cache=TRUE}
+Join the individual data frames to create a single dataframe with all indicators 
+```r
 library(plyr)
 WDI.key <- join(population,pop.density, by = c("iso2c","year","country"))
 WDI.key <- join(WDI.key,gdp.pc, by = c("iso2c","year","country"))
@@ -194,8 +191,8 @@ WDI.key <- join(WDI.key,unemployment, by = c("iso2c","year","country"))
 WDI.key <- join(WDI.key,under5.mort.rate, by = c("iso2c","year","country"))
 ```
 
-#### The new data frame given only a code for each country and the country name as it's region. I will join to the countries table in WDI.data to get the actual country name, along with details about the country. 
-```{r cache=TRUE}
+The new data frame given only a code for each country and the country name as it's region. I will join to the countries table in WDI.data to get the actual country name, along with details about the country. 
+```r
 # Create 2 new matrices
 wdi.data=WDI_data
 # All indicators in first matrix
@@ -213,20 +210,21 @@ key.subset = subset(WDI.key, country %in% countries.df$country)
 WDI.key = join(key.subset,countries.df)
 ```
 
-#### Taking a look at this final data frame, the indicator data now has the country name, along with some details, such as longitude/latitude and income category. These might be useful in later analysis.
+Taking a look at this final data frame, the indicator data now has the country name, along with some details, such as longitude/latitude and income category. These might be useful in later analysis.
 ```{r cache=TRUE}
 str(WDI.key)
 ```
-#### Check number of unique countries before joining to UNDP data
+
+Check number of unique countries before joining to UNDP data
 ```{r cache=TRUE}
 sapply(WDI.key, function(x) length(unique(x)))
 ```
 
 
-# -----GATHERING AND JOINING UNDP DATA-----
+<b>GATHERING AND JOINING UNDP DATA</b>
 
-#### UNDP Human Development Data can easily be downloaded as csv files here: http://hdr.undp.org/en/data
-#### Note: I cleaned up country names to match using Excel before importing as this is the quickest and easiest method 
+UNDP Human Development Data can easily be downloaded as csv files here: http://hdr.undp.org/en/data
+Note: I cleaned up country names to match WDI names using Excel before importing as this is the quickest and easiest method. 
 
 ```{r}
 library(tidyr)
@@ -235,7 +233,8 @@ library(dplyr)
 GNI.pc <- read.csv("~/Desktop/GNI_pc.csv", na.strings="NULL")
 GNI.pc
 ```
-####Gather and clean
+
+Gather and clean
 ```{r}
 #use gather function to convert years to a single column to match WDI data
 gni.pc <- gather(GNI.pc, year, gni.pc, X1990:X2018, convert = TRUE)
@@ -251,10 +250,10 @@ key.ind = join(WDI.key, gni.pc, by = c("year" = "year", "country" = "country"))
 ```{r}
 sapply(key.ind, function(x) length(unique(x)))
 ```
-#### gni.pc has been appeneded to the first dataframe and the unique country count is still 217 
 
+gni.pc has been appeneded to the first dataframe and the unique country count is still 217 
 
-## Repeat for remaining indeces
+Repeat for remaining indeces
 ```{r}
 #Human Development Index
 hdi <- read.csv("~/Desktop/human_dev_index.csv", na.strings="NULL")
@@ -292,8 +291,6 @@ sapply(key.ind, function(x) length(unique(x)))
 ```{r}
 str(key.ind)
 ```
-
-
 
 
 <!-- Exploratory Data Analysis -->
