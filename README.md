@@ -10,7 +10,7 @@ Under Construction
 <b>Table of Contents</b>
   <ol>
     <li><a href="#Project-Overview">Project Overview</a>
-    <li><a href="#Data-Engineering">Data Engineering</a></li>
+    <li><a href="#Data-Engineering">Data Engineering</a>
     <li><a href="#Exploratory-Data-Analysis">Exploratory Data Analysis</a></li>
     <li><a href="#Building-Prediction-Models">Building Prediction Models</a></li>
     <li><a href="#results">Results</a></li>
@@ -66,7 +66,7 @@ Creating a final data frame for the prediction model required multiple steps.
 I first created an individual dataframe for each indicator I wanted to analyze. I selected the years 1990 to 2018 because data is more sparse in earlier years. By creating a seperate dataframe for each indicator, I was able to more easily analyze and update each one as needed throughout the process. However, it is possible to create a single dataframe for all indicators with the code:
 
 <ul>
-<dt>Population</dt>
+<li>Population</li>
 population = WDI(indicator='SP.POP.TOTL', country="all",start=1990, end=2018)
 </ul>
 # GDP (USD)
