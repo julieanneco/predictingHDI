@@ -233,7 +233,9 @@ corrplot(Matrix, type="upper", order="hclust", method="pie",
 ```
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/matrix1.png?raw=true" alt="Correlation Matrix" width="650">
 
-The strength of the correlation is indicated by the pies. Blue indicates a positive correlation and red indicated a negative correlation. It is easy to see variables with strong correlation to HDI 
+The strength of the correlation is indicated by the pies. Blue indicates a positive correlation and red indicated a negative correlation. It is easy to see variables with strong correlation to HDI and I have outlined each of them. Using only these variables, I can now take a deeper look at the regression. I created a data frame <b>predict.hdi</b> to further narrow down the data that will be used for building a prediction model. Looking at a matrix of scatterplots, there is clear regression within the variables. 
+
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/matrix2.png?raw=true" alt="Scatterplot Matrix" width="650">
 
 <!-- Random Forest Regression -->
 ## Random Forest Regression
