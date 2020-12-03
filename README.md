@@ -254,7 +254,7 @@ F-statistic: 1.739e+04 on 1 and 4676 DF,  p-value: < 2.2e-16
 
 <img align="left" src="https://github.com/julieanneco/predictingHDI/blob/photos/edu.png?raw=true" alt="edu index" width="350">
 <br />
-<br />
+
 <b>Education Index and HDI</b>
 
 Residual standard error: 0.05243 on 4676 degrees of freedom
@@ -262,6 +262,8 @@ Residual standard error: 0.05243 on 4676 degrees of freedom
 Multiple R-squared:  0.9002,	Adjusted R-squared:  0.9002 
 
 F-statistic: 4.217e+04 on 1 and 4676 DF,  p-value: < 2.2e-16
+
+<br />
 <br />
 <br />
 
