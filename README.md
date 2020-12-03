@@ -203,31 +203,8 @@ This resulted in the following:
 </table>
 
 I decided to exclude any indicators with more than 15% NULL values. Unfortunatly, this meant I was left without any education indicators. Still, given this cut off, I then joined the individual data frames with lower than 15% NULL values to create a single dataframe called <b>WDI.key</b>. I then joined this data frame to the country details in WDI in case I need to analyze at various levels in the future. This is the resulting data frame structure.
-<img src="https://github.com/julieanneco/predictingHDI/blob/photos/WDI.key.png?raw=true" alt="WDI.key">
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/WDI.key.png?raw=true" alt="WDI.key" width="650">
 
-The new data frame given only a code for each country and the country name as it's region. I will join to the countries table in WDI.data to get the actual country name, along with details about the country. 
-```r
-# Create 2 new matrices
-wdi.data=WDI_data
-# All indicators in first matrix
-indicators=wdi.data[[1]]
-# Countries and regions in second matrix
-countries=wdi.data[[2]]
-# Create countries dataframe
-df = as.data.frame(countries)
-# Determine which countries are aggregated and not actual countries
-null.countries <- df$region != "Aggregates"
-# Remove countries that are aggregates
-countries.df <- df[null.countries,]
-# Create a subset of the WDI.ALL table and join to countries.df
-key.subset = subset(WDI.key, country %in% countries.df$country)
-WDI.key = join(key.subset,countries.df)
-```
-
-Taking a look at this final data frame, the indicator data now has the country name, along with some details, such as longitude/latitude and income category. These might be useful in later analysis.
-```{r cache=TRUE}
-str(WDI.key)
-```
 
 Check number of unique countries before joining to UNDP data
 ```{r cache=TRUE}
