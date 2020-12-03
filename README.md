@@ -13,7 +13,11 @@ Under Construction
     <li><a href="#Data-Engineering">Data Engineering</a>
     <li><a href="#Exploratory-Data-Analysis">Exploratory Data Analysis</a></li>
     <li><a href="#Building-Prediction-Models">Building Prediction Models</a></li>
-    <li><a href="#results">Results</a></li>
+          <ul>
+          <li><a href="#random-forest-regression">Random Forest Regression</a></li>
+          <li><a href="#random-forest-classification">Random Forest Classification</a></li>
+          </ul>
+    <li><a href="#conclusion">Conclusion</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
     <li><a href="#references">References</a></li>
@@ -270,13 +274,21 @@ Data analysis and variable regression.
 
 
 <!-- Building Prediction Models -->
-## Building Prediction Models
+# Building Prediction Models
 
 Building the models.
 
-<!-- Results -->
 
-## Results
+<!-- Random Forest Regression -->
+## Random Forest Regression
+
+
+<!-- Random Forest Classification -->
+## Random Forest Classification
+
+<!-- Conclusion -->
+
+## Conclusion
 ![alt text](https://github.com/julieanneco/predictingHDI/blob/photos/RF-R-Results.jpg?raw=true)
 
 
@@ -289,7 +301,7 @@ Project Link: [link](https://github.com/julieanneco/predictingHDI)
 
 
 <!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
+### Acknowledgements
 <b>Packages Utilized:</b>
 * [WDI](https://www.rdocumentation.org/packages/WDI/versions/2.7.1)
 * [plyr](https://www.rdocumentation.org/packages/plyr/versions/1.8.6)
@@ -302,5 +314,5 @@ Project Link: [link](https://github.com/julieanneco/predictingHDI)
 * [randomForest](https://www.rdocumentation.org/packages/randomForest/versions/4.6-14/topics/randomForest)
 * [caTools](https://www.rdocumentation.org/packages/caTools/versions/1.17.1)
 
-## References
+### References
 Van der Mensbrugghe, Dominique. (2016). Using R to Extract Data from the World Bank's World Development Indicators. <i>Journal of Global Economic Analysis</i>. 1. 251-283. 10.21642/JGEA.010105AF. 
