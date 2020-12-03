@@ -6,7 +6,7 @@ Under Construction
 <img align="right" src="https://github.com/julieanneco/predictingHDI/blob/photos/map.png?raw=true" alt="world map" width="680">
 
 
-<!-- TABLE OF CONTENTS -->
+<!-- Table of Contents -->
 <b>Table of Contents</b>
   <ol>
     <li><a href="#Project-Overview">Project Overview</a>
@@ -18,12 +18,11 @@ Under Construction
           <li><a href="#random-forest-classification">Random Forest Classification</a>
           </ul>
     <li><a href="#conclusion">Conclusion</a>
-    <li><a href="#contact">Contact</a>
     <li><a href="#acknowledgements">Acknowledgements</a>
   </ol>
 
 
-<!-- PROJECT OVERVIEW -->
+<!-- Project Overview -->
 ## Project Overview
 
 The World Bank has a massive database called the World Development Indicators (WDI). According to the World Bank, the WDI are a "compilation of cross-country, relevant, high-quality, and internationally comparable statistics about global development and the fight against poverty." This data is free and open to the public for use. The WDI database contains a vast array of socioeconomic indicators related to population, GDP, education, health, human rights, labor, trade, land use, and so on. It is used by The WDI is one of the most significant international databases and contains around 1300 indicators for almost every country in the world, with the earliest indicators starting in 1960 (Van Der Mensbrugghe, 2016). 
@@ -309,15 +308,8 @@ Random Forest Classification
 ![alt text](https://github.com/julieanneco/predictingHDI/blob/photos/RF-R-Results.jpg?raw=true)
 
 
-<!-- Contact -->
-## Contact
 
-Julie Anne Hockensmith
-
-Project Link: [Predicting HDI](https://github.com/julieanneco/predictingHDI)
-
-
-<!-- ACKNOWLEDGEMENTS -->
+<!-- Acknowledgements -->
 ## Acknowledgements
 ### Packages Utilized
 * [WDI](https://www.rdocumentation.org/packages/WDI/versions/2.7.1)
