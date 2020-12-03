@@ -355,6 +355,11 @@ Random Forest Classification
 
 <!-- Acknowledgements -->
 ## Acknowledgements
+
+### Data 
+* [World Bank World Development Indicators](https://databank.worldbank.org/source/world-development-indicators)
+* [UNDP Human Development Data](http://hdr.undp.org/en/data)
+
 ### Packages Utilized
 * [WDI](https://www.rdocumentation.org/packages/WDI/versions/2.7.1)
 * [plyr](https://www.rdocumentation.org/packages/plyr/versions/1.8.6)
