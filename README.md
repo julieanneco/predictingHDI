@@ -329,8 +329,7 @@ print(hdi.rf.1)
 plot(hdi.rf.1) 
 ```
 
-<img src="https://github.com/julieanneco/predictingHDI/blob/photos/tress.png?raw=true" alt="errors" width="350">
-
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/trees.png?raw=true" alt="errors" width="350">
 
 After tuning and testing for out of bag (OOB) error improvement and also looking at the significance of each variable for possible mean changes, I determined the original model was still the best fit with a <b>root-mean square error of .0087</b> and <b>explained variance of 99.76%</b>, which both indicate a highly valid fit. Moving forward with this model, I made predictions on the test data, converted the predictions to a data frame and merged them with the original test data to see a side-by-side comparison. This sample shows just how close the prediction model gets to the actual human development index based on the variables used in the random forest training.
 
