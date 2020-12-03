@@ -12,7 +12,7 @@ Under Construction
     <li><a href="#Project-Overview">Project Overview</a>
     <li><a href="#Data-Engineering">Data Engineering</a>
     <li><a href="#Exploratory-Data-Analysis">Exploratory Data Analysis</a>
-    <li>Building Prediction Models
+    <li><a href="#random-forest-regression">Building Prediction Models</a>
           <ul>
           <li><a href="#random-forest-regression">Random Forest Regression</a>
           <li><a href="#random-forest-classification">Random Forest Classification</a>
