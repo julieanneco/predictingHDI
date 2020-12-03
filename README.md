@@ -89,7 +89,23 @@ To download the data for this project, I created individual data frames for each
 
 
 <b><i>Preparing and joining the data for analysis</b></i>
-The API function only downloads each indicator with the region, country code, and indicator vector code. To prepare and clean the data, I renamed the indicator column to a recognizable name. I then checked each indicator for NULL values in order to determine any that would be eliminated due to sparse data. This resulted in the following:
+
+The API function only downloads each indicator with the region, country code, and indicator vector code. To prepare and clean the data, I renamed the indicator column to a recognizable name. Later I will need to join to country data.
+```r
+# example
+names(population)[3]="population"
+```
+
+I then calculated the percentage of NULL values for each indicator to determine any that would be eliminated due to sparse data.
+```r
+# example
+print(paste0("population"))
+population.na <- as.data.frame(sum(is.na(population$population)))
+population.n <- as.data.frame(nrow(population))
+population.na$`sum(is.na(population$population))`/population.n$`nrow(population)`*100
+```
+
+This resulted in the following:
 
 <table>
   <tr>
@@ -186,47 +202,8 @@ The API function only downloads each indicator with the region, country code, an
   </tr>
 </table>
 
-Check for occurence of null values
-```{r}
-colSums(is.na(population))
-colSums(is.na(gdp.pc))
-colSums(is.na(gdp.pc.income))
-colSums(is.na(pop.density))
-colSums(is.na(greenhouse.gas))
-colSums(is.na(co2))
-colSums(is.na(co2.pc))
-colSums(is.na(pollution.expose))
-colSums(is.na(birth.rate))
-colSums(is.na(fertility.rate))
-colSums(is.na(imports.gs))
-colSums(is.na(exports.gs))
-colSums(is.na(life.exp))
-colSums(is.na(infant.mort.rate))
-colSums(is.na(under5.mort.rate))
-colSums(is.na(unemployment))
-colSums(is.na(edu.lower))
-colSums(is.na(edu.primary))
-colSums(is.na(edu.upper))
-colSums(is.na(literacy))
-colSums(is.na(edu.funding))
-```
+I decided to exclude any indicators with more than 15% NULL values. Unfortunatly, this meant I was left without any education indicators. Still, given this cut off, I then joined the individual data frames with lower than 15% NULL values to create a single dataframe called <b>WDI.key</b>. I then joined this data frame to the country details in WDI in case I need to analyze at various levels in the future. This is the resulting data frame structure.
 
-Given the range of NULL values, I will create 2 seperate dataframes. In my first dataframe for key economic and climate indicators, I will not include any with high NULL counts, which I will define as over 1150 (15% NULL) -- greenhouse gas, methane emmission, pollution exposure, and agricultural methane.
-
-Join the individual data frames to create a single dataframe with all indicators 
-```r
-library(plyr)
-WDI.key <- join(population,pop.density, by = c("iso2c","year","country"))
-WDI.key <- join(WDI.key,gdp.pc, by = c("iso2c","year","country"))
-WDI.key <- join(WDI.key,gdp.pc.income, by = c("iso2c","year","country"))
-WDI.key <- join(WDI.key,co2, by = c("iso2c","year","country"))
-WDI.key <- join(WDI.key,co2.pc, by = c("iso2c","year","country"))
-WDI.key <- join(WDI.key,birth.rate, by = c("iso2c","year","country"))
-WDI.key <- join(WDI.key,life.exp, by = c("iso2c","year","country"))
-WDI.key <- join(WDI.key,infant.mort.rate, by = c("iso2c","year","country"))
-WDI.key <- join(WDI.key,unemployment, by = c("iso2c","year","country"))
-WDI.key <- join(WDI.key,under5.mort.rate, by = c("iso2c","year","country"))
-```
 
 The new data frame given only a code for each country and the country name as it's region. I will join to the countries table in WDI.data to get the actual country name, along with details about the country. 
 ```r
