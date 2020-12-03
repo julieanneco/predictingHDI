@@ -312,8 +312,33 @@ F-statistic: 2.279e+04 on 1 and 4676 DF,  p-value: < 2.2e-16
 <!-- Random Forest Regression -->
 ## Random Forest Regression
 
-Random Forest Regression
+The <b>predict.hdi</b> data frame has been cleaned and validated for regression. Using this final data frame that results from steps 1 and 2, I decided to test a random forest prediction model. To begin, I split the data into 2 partitions using the caret package. I chose to partition 90% for training and 10% for testing because I wanted to have as much data to train as possible, though standard partitioning is often around 80/20.
+```{r}
+set.seed(123)
+hdi.samples <- predict.hdi$hdi %>%
+  createDataPartition(p = 0.9, list = FALSE)
+train.hdi  <- predict.hdi[hdi.samples, ]
+test.hdi <- predict.hdi[-hdi.samples, ]
+```
 
+Using the randomForect package, I fit a basic random forest regression model with 500 trees and a mtry of 3. I then plotted the error versus the number of trees.
+```{r}
+hdi.rf.1 <- randomForest(hdi ~ ., data = train.hdi, ntree=500, mtry = 3, 
+						importance = TRUE, na.action = na.omit) 
+print(hdi.rf.1) 
+plot(hdi.rf.1) 
+```
+
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/tress.png?raw=true" alt="errors" width="350">
+
+
+After tuning and testing for out of bag (OOB) error improvement and also looking at the significance of each variable for possible mean changes, I determined the original model was still the best fit with a <b>root-mean square error of .0087</b> and <b>explained variance of 99.76%</b>, which both indicate a highly valid fit. Moving forward with this model, I made predictions on the test data, converted the predictions to a data frame and merged them with the original test data to see a side-by-side comparison. This sample shows just how close the prediction model gets to the actual human development index based on the variables used in the random forest training.
+
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/predictions1.png?raw=true" alt="predictions" width="350">
+
+The average distance of the prediction to the actual HDI is -.0051, which is very impressive given some of the variance in each variable dataset. I created a plot to vizualize the prediction variance for the entire test data. The model seems to predict higher indices better, but only by a nominal amount. 
+
+![alt text](https://github.com/julieanneco/predictingHDI/blob/photos/RF-R-Results.jpg?raw=true)
 
 <!-- Random Forest Classification -->
 ## Random Forest Classification
@@ -325,7 +350,7 @@ Random Forest Classification
 <!-- Conclusion -->
 
 ## Conclusion
-![alt text](https://github.com/julieanneco/predictingHDI/blob/photos/RF-R-Results.jpg?raw=true)
+
 
 
 
