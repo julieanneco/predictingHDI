@@ -268,6 +268,7 @@ F-statistic: 4.217e+04 on 1 and 4676 DF,  p-value: < 2.2e-16
 <img align="left" src="https://github.com/julieanneco/predictingHDI/blob/photos/gdp.png?raw=true" alt="gdp per capita" width="350">
 <br />
 <br />
+<br />
 <b>GDP Per Capita and HDI</b>
 
 Residual standard error: 0.1197 on 4676 degrees of freedom
@@ -277,7 +278,7 @@ Multiple R-squared:   0.48,	Adjusted R-squared:  0.4798
 F-statistic:  4316 on 1 and 4676 DF,  p-value: < 2.2e-16
 <br />
 <br />
-<img src="https://github.com/julieanneco/predictingHDI/blob/photos/infant.png?raw=true" alt="infant mortality rate" width="350">
+<img align="left" src="https://github.com/julieanneco/predictingHDI/blob/photos/infant.png?raw=true" alt="infant mortality rate" width="350">
 <br />
 <br />
 <b>Infant Mortality Rate and HDI</b>
@@ -289,7 +290,7 @@ Multiple R-squared:  0.8172,	Adjusted R-squared:  0.8172
 F-statistic: 2.091e+04 on 1 and 4676 DF,  p-value: < 2.2e-16
 <br />
 <br />
-<img src="https://github.com/julieanneco/predictingHDI/blob/photos/lifeexp.png?raw=true" alt="life expectancy" width="350">
+<img align="left" src="https://github.com/julieanneco/predictingHDI/blob/photos/lifeexp.png?raw=true" alt="life expectancy" width="350">
 <br />
 <br />
 <b>Life Expectancy and HDI</b>
