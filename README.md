@@ -40,88 +40,94 @@ The entire project is coded in R and consists of 3 key steps (each in seperate R
 
 <!-- Data Engineering -->
 ## Data Engineering
-<b>Scraping, Transforming, Joining, and Cleaning.</b>
-
 
 <details open="open">
-<summary>Using the API to scrape WDI data</summary>
-There are two methods for accessing WDI. The first is to directly use the World Bank’s web-based graphical user interface (GUI).1 The user points and clicks with a mouse to select countries, indicators and years. The selected data can then be downloaded in alternative formats, for example Excel. This access method is fine for the occasional use of WDI but quickly becomes tedious for large selections and/or when access is routine. The second method uses a so-called Application Programming Interface (API) that can be embedded in computer code to programmatically extract data from WDI. The API requires inputs—selected countries, indicators and years—and returns the desired data ’cube’. The API has been integrated into an R package2 that simplifies the extraction process and allows for the downloaded data to be directly treated in R or to be saved as a datafile for use with another programming environment. 
-
-Each indicator has a vector code that is used for querying and downloading functions within R. There are several ways to find the vector codes for specfic indicators or indicators containing a keyword. In R, you can use the WDIsearch() function. You can also use the worldbank report creator or data dictionary to find specific indicators. To get a list of all indicators, you can use the function WDIcache(), however, R Studio will omit many rows from view.
+  <summary><b><i>Using the WDI API to scrape indicator data</b></i></summary>
+There are two methods for accessing WDI data. The first is to directly use the World Bank’s web-based graphical user interface (GUI). The second method uses an Application Programming Interface (API). The API has been integrated into an R package that simplifies the extraction process and allows for use of the data directly in R. Each indicator has a vector code that is used for querying and downloading functions within R. There are several ways to find the vector codes for specfic indicators or indicators containing a keyword. In R, you can use the WDIsearch() function. You can also use the worldbank data dictionary or GUI report creator to find the vector codes for specific indicators. 
 </details>
 
-
-The WDI library is installed and loaded like any other package
+Once installed, the WDI library is loaded like any standard package.
 ```r
 library(WDI)
 ```
 
-Code for downloading data from the WDI API
+WDI function to access and download data
 ```r
-# multiple indicators into a single dataframe
+# download multiple indicators into a single data frame
 dataframe = WDI(indicator= c("vector code","vector code", etc.), country="all", start=year, end=year)
 
-# single indicator into a single data frame
+# download a single indicator into a data frame
 dataframe = WDI(indicator='vector code', country="all", start=year, end=year)
 ```
 
-Creating a final data frame for the prediction model required multiple steps.
-
-<ol>
-<li> I first created an individual dataframe for each indicator I wanted to analyze. I selected the years 1990 to 2018 because data is more sparse in earlier years. By creating a seperate dataframe for each indicator, I was able to more easily analyze and update each one as needed throughout the process. However, it is possible to create a single dataframe for all indicators with the code:
+To download the data for this project, I created individual data frames for each indicator I wanted to analyze. By creating a seperate dataframe for each indicator, I was able to more easily analyze and update each one as needed throughout the process. I selected the years 1990 to 2018 because data in earlier years has more NULL values and included all countries. The following WDI indicators were downloaded:
 
 <ul>
-<li>Population
-<li>GDP per capita (constant 2010 US$)	
-<li>GDP Per capita income
-<li>Population density (people per sq. km of land area)	
-<li>Greenhouse Gas Emissions (kt)
-<li>Total C02 emissions (kt)
-<li>CO2 emissions (metric tons per capita)
-<li>PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)	
-<li>Birth rate, crude (per 1,000 people)	
-<li>Fertility rate, total (births per woman)	
-<li>Imports of goods and services (% of GDP)	
-<li>Exports of goods and services (% of GDP)		
-<li>Life expectancy at birth, total (years)	
-<li>Mortality rate, infant (per 1,000 live births)	
-<li>Mortality rate, under-5 (per 1,000 live births)	
-<li>Unemployment, total (% of total labor force) (modeled ILO estimate)	
-<li>Adjusted net enrolment rate, lower secondary
-<li>Adjusted net enrolment rate, primary	
-<li>Adjusted net enrolment rate, upper secondary
-<li>Adult literacy rate, population 15+ years, both sexes (%)	SE.ADT.LITR.ZS
-<li>Initial government funding of education as a percentage of GDP (%)
-<li>Expected Years Of School
+      <li>Population
+      <li>GDP per capita (constant 2010 US$)	
+      <li>GDP Per capita income
+      <li>Population density (people per sq. km of land area)	
+      <li>Greenhouse Gas Emissions (kt)
+      <li>Total C02 emissions (kt)
+      <li>CO2 emissions (metric tons per capita)
+      <li>PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)	
+      <li>Birth rate, crude (per 1,000 people)	
+      <li>Fertility rate, total (births per woman)	
+      <li>Imports of goods and services (% of GDP)	
+      <li>Exports of goods and services (% of GDP)		
+      <li>Life expectancy at birth, total (years)	
+      <li>Mortality rate, infant (per 1,000 live births)	
+      <li>Mortality rate, under-5 (per 1,000 live births)	
+      <li>Unemployment, total (% of total labor force) (modeled ILO estimate)	
+      <li>Adjusted net enrolment rate, lower secondary
+      <li>Adjusted net enrolment rate, primary	
+      <li>Adjusted net enrolment rate, upper secondary
+      <li>Adult literacy rate, population 15+ years, both sexes (%)	SE.ADT.LITR.ZS
+      <li>Initial government funding of education as a percentage of GDP (%)
+      <li>Expected Years Of School
 </ul>
 
-<li><b>Preparing the Data for Analysis</b>
-</ol>
-The API function only downloads each indicator with the region, country code, and indicator vector code. To prepare and clean the data, I renamed the indicator column to a recognizable name.
-```r
-names(population)[3]="population"
-names(gdp.pc)[3]="gdp.pc"
-names(gdp.pc.income)[3]="gdp.pc.income"
-names(pop.density)[3]="pop.density"
-names(greenhouse.gas)[3]="greenhouse.gas"
-names(co2)[3]="co2"
-names(co2.pc)[3]="co2.pc"
-names(pollution.expose)[3]="pollution.expose"
-names(birth.rate)[3]="birth.rate"
-names(fertility.rate)[3]="fertility.rate"
-names(imports.gs)[3]="imports.gs"
-names(exports.gs)[3]="exports.gs"
-names(life.exp)[3]="life.exp"
-names(infant.mort.rate)[3]="infant.mort.rate"
-names(under5.mort.rate)[3]="under5.mort.rate"
-names(unemployment)[3]="unemployment"
-names(edu.lower)[3]="edu.lower"
-names(edu.primary)[3]="edu.primary"
-names(edu.upper)[3]="edu.upper"
-names(literacy)[3]="literacy"
-names(edu.funding)[3]="edu.funding"
-names(edu.years)[3]="edu.years"
-```
+
+<b><i>Preparing and joining the data for analysis</b></i>
+The API function only downloads each indicator with the region, country code, and indicator vector code. To prepare and clean the data, I renamed the indicator column to a recognizable name. I then checked each indicator for NULL values in order to determine any that would be eliminated due to sparse data. This resulted in the following:
+
+<table>
+  <tr>
+    <th>Month</th>
+    <th>Savings</th>
+  </tr>
+  <tr>
+    <td>January</td>
+    <td>$100</td>
+  </tr>
+  <tr>
+    <td>February</td>
+    <td>$80</td>
+  </tr>
+</table>
+
+population: 47
+gdp.pc: 748   
+gdp.pc.income: 937             
+pop.density: 134           
+greenhouse.gas: 2376              
+co2: 1023       
+co2.pc: 1033     
+pollution.expose: 4776                
+birth.rate: 399        
+fertility.rate: 538         
+imports.gs: 1256         
+exports.gs: 1256        
+life.exp: 540      
+infant.mort.rate: 725             
+under5.mort.rate: 725           
+unemployment: 1132        
+edu.lower: 5381        
+edu.primary: 4000      
+country edu.upper: 6516    
+literacy: 5714      
+edu.funding: 5011        
+edu.years: 1503
 
 Check for occurence of null values
 ```{r}
@@ -297,7 +303,7 @@ Random Forest Classification
 
 Julie Anne Hockensmith
 
-Project Link: [link](https://github.com/julieanneco/predictingHDI)
+Project Link: [Predicting HDI](https://github.com/julieanneco/predictingHDI)
 
 
 <!-- ACKNOWLEDGEMENTS -->
