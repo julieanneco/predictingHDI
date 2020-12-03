@@ -63,11 +63,9 @@ dataframe = WDI(indicator='vector code', country="all", start=year, end=year)
 
 Creating a final data frame for the prediction model required multiple steps.
 
-I first created an individual dataframe for each indicator I wanted to analyze. I selected the years 1990 to 2018 because data is more sparse in earlier years. By creating a seperate dataframe for each indicator, I was able to more easily analyze and update each one as needed throughout the process. However, it is possible to create a single dataframe for all indicators with the code:
+<ol>
+<li> I first created an individual dataframe for each indicator I wanted to analyze. I selected the years 1990 to 2018 because data is more sparse in earlier years. By creating a seperate dataframe for each indicator, I was able to more easily analyze and update each one as needed throughout the process. However, it is possible to create a single dataframe for all indicators with the code:
 
-<dl>
-<dd>- Population
-</dl>
 <ul>
 <li>Population
 <li>GDP per capita (constant 2010 US$)	
@@ -93,8 +91,8 @@ I first created an individual dataframe for each indicator I wanted to analyze. 
 <li>Expected Years Of School
 </ul>
 
-<b>Preparing the Data for Analysis</b>
-
+<li><b>Preparing the Data for Analysis</b>
+</ol>
 The API function only downloads each indicator with the region, country code, and indicator vector code. To prepare and clean the data, I renamed the indicator column to a recognizable name.
 ```r
 names(population)[3]="population"
