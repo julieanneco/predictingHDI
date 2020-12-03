@@ -5,7 +5,6 @@ Under Construction
 <br />
 <img align="right" src="https://github.com/julieanneco/predictingHDI/blob/photos/map.png?raw=true" alt="world map" width="500">
 
-
 <!-- Table of Contents -->
 <b>Table of Contents</b>
   <ol>
