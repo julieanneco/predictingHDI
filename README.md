@@ -20,7 +20,6 @@ Under Construction
     <li><a href="#conclusion">Conclusion</a>
     <li><a href="#contact">Contact</a>
     <li><a href="#acknowledgements">Acknowledgements</a>
-    <li><a href="#references">References</a>
   </ol>
 
 
@@ -320,7 +319,7 @@ Project Link: [Predicting HDI](https://github.com/julieanneco/predictingHDI)
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
-<b>Packages Utilized:</b>
+### Packages Utilized
 * [WDI](https://www.rdocumentation.org/packages/WDI/versions/2.7.1)
 * [plyr](https://www.rdocumentation.org/packages/plyr/versions/1.8.6)
 * [tidyr](https://www.rdocumentation.org/packages/tidyr/versions/0.8.3)
@@ -332,5 +331,5 @@ Project Link: [Predicting HDI](https://github.com/julieanneco/predictingHDI)
 * [randomForest](https://www.rdocumentation.org/packages/randomForest/versions/4.6-14/topics/randomForest)
 * [caTools](https://www.rdocumentation.org/packages/caTools/versions/1.17.1)
 
-## References
+### References
 Van der Mensbrugghe, Dominique. (2016). Using R to Extract Data from the World Bank's World Development Indicators. <i>Journal of Global Economic Analysis</i>. 1. 251-283. 10.21642/JGEA.010105AF. 
