@@ -93,41 +93,98 @@ The API function only downloads each indicator with the region, country code, an
 
 <table>
   <tr>
-    <th>Month</th>
-    <th>Savings</th>
+    <th>Indicator</th>
+    <th>% NULL</th>
   </tr>
   <tr>
-    <td>January</td>
-    <td>$100</td>
+    <td>population</td>
+    <td>0.61%</td>
   </tr>
   <tr>
-    <td>February</td>
-    <td>$80</td>
+    <td>gdp.pc</td>
+    <td>9.8%</td>
+  </tr>
+  <tr>
+    <td>gdp.pc.income</td>
+    <td>12.2%</td>
+  </tr>
+  <tr>
+    <td>pop.density</td>
+    <td>1.8%</td>
+  </tr>
+  <tr>
+    <td>greenhouse.gas</td>
+    <td>31.0%</td>
+  </tr>
+  <tr>
+    <td>co2</td>
+    <td>13.4%</td>
+  </tr>
+  <tr>
+    <td>co2.pc</td>
+    <td>13.5%</td>
+  </tr>
+  <tr>
+    <td>pollution.expose</td>
+    <td>62.4%</td>
+  </tr>
+  <tr>
+    <td>birth.rate</td>
+    <td>5.2%</td>
+  </tr>
+  <tr>
+    <td>fertility.rate</td>
+    <td>7.0%</td>
+  </tr>
+  <tr>
+    <td>imports.gs</td>
+    <td>16.4%</td>
+  </tr>
+  <tr>
+    <td>exports.gs</td>
+    <td>16.4%</td>
+  </tr>
+  <tr>
+    <td>life.exp</td>
+    <td>7.1%</td>
+  </tr>
+  <tr>
+    <td>infant.mort.rate</td>
+    <td>9.5%</td>
+  </tr>
+  <tr>
+    <td>under5.mort.rate</td>
+    <td>9.5%</td>
+  </tr>
+  <tr>
+    <td>unemployment</td>
+    <td>14.8%</td>
+  </tr>
+  <tr>
+    <td>edu.lower</td>
+    <td>69.2%</td>
+  </tr>
+  <tr>
+    <td>edu.primary</td>
+    <td>52.2%</td>
+  </tr>
+  <tr>
+    <td>edu.upper</td>
+    <td>83.8%</td>
+  </tr>
+  <tr>
+    <td>literacy</td>
+    <td>74.6%</td>
+  </tr>
+  <tr>
+    <td>edu.funding</td>
+    <td>64.5%</td>
+  </tr>
+  <tr>
+    <td>edu.years</td>
+    <td>77.0%</td>
   </tr>
 </table>
-
-population: 47
-gdp.pc: 748   
-gdp.pc.income: 937             
-pop.density: 134           
-greenhouse.gas: 2376              
-co2: 1023       
-co2.pc: 1033     
-pollution.expose: 4776                
-birth.rate: 399        
-fertility.rate: 538         
-imports.gs: 1256         
-exports.gs: 1256        
-life.exp: 540      
-infant.mort.rate: 725             
-under5.mort.rate: 725           
-unemployment: 1132        
-edu.lower: 5381        
-edu.primary: 4000      
-country edu.upper: 6516    
-literacy: 5714      
-edu.funding: 5011        
-edu.years: 1503
 
 Check for occurence of null values
 ```{r}
