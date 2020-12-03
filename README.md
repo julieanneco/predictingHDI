@@ -11,16 +11,16 @@ Under Construction
   <ol>
     <li><a href="#Project-Overview">Project Overview</a>
     <li><a href="#Data-Engineering">Data Engineering</a>
-    <li><a href="#Exploratory-Data-Analysis">Exploratory Data Analysis</a></li>
-    <li><a href="#Building-Prediction-Models">Building Prediction Models</a></li>
+    <li><a href="#Exploratory-Data-Analysis">Exploratory Data Analysis</a>
+    <li>Building Prediction Models
           <ul>
-          <li><a href="#random-forest-regression">Random Forest Regression</a></li>
-          <li><a href="#random-forest-classification">Random Forest Classification</a></li>
+          <li><a href="#random-forest-regression">Random Forest Regression</a>
+          <li><a href="#random-forest-classification">Random Forest Classification</a>
           </ul>
-    <li><a href="#conclusion">Conclusion</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgements">Acknowledgements</a></li>
-    <li><a href="#references">References</a></li>
+    <li><a href="#conclusion">Conclusion</a>
+    <li><a href="#contact">Contact</a>
+    <li><a href="#acknowledgements">Acknowledgements</a>
+    <li><a href="#references">References</a>
   </ol>
 
 
@@ -271,12 +271,6 @@ str(key.ind)
 ## Exploratory Data Analysis
 
 Data analysis and variable regression. 
-
-
-<!-- Building Prediction Models -->
-# Building Prediction Models
-
-Building the models.
 
 
 <!-- Random Forest Regression -->
