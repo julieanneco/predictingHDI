@@ -333,4 +333,4 @@ Project Link: [link](link)
 * [caTools](https://www.rdocumentation.org/packages/caTools/versions/1.17.1)
 
 ## References
-https://pdfs.semanticscholar.org/d19f/09842ed6d44a4da9bc8043ec713f3b61c8b2.pdf
+Van der Mensbrugghe, Dominique. (2016). Using R to Extract Data from the World Bank's World Development Indicators. <i>Journal of Global Economic Analysis</i>. 1. 251-283. 10.21642/JGEA.010105AF. 
