@@ -223,8 +223,17 @@ After a bit of clean up, joining the UNDP data to the WDI.key data frame, and va
 <!-- Exploratory Data Analysis -->
 ## Exploratory Data Analysis
 
-Data analysis and variable regression. 
+<b>Correlation Matrix</b>
+To begin analysis, I removed any rows with NULL values and all non-numerical columns from the key.ind data frame in order to create a correlation matrix. This matrix allowed me to understand variables that highly correlated to the Human Development Index (HDI). For the correlation matrix, I used the corrplot and color brewer packages.
 
+```r
+Matrix <-cor(key.corr)
+corrplot(Matrix, type="upper", order="hclust", method="pie",
+         col=brewer.pal(n=8, name="RdYlBu"))
+```
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/matrix1.png?raw=true" alt="Correlation Matrix" width="650">
+
+The strength of the correlation is indicated by the pies. Blue indicates a positive correlation and red indicated a negative correlation. It is easy to see variables with strong correlation to HDI 
 
 <!-- Random Forest Regression -->
 ## Random Forest Regression
