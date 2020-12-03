@@ -3,7 +3,7 @@ Under Construction
 
 #### <i>Building a supervised machine learning model to predict the Human Development Index (HDI) based on World Development Indicators (WDI) and UNDP Data.</i>
 <br />
-<img align="right" src="https://github.com/julieanneco/predictingHDI/blob/photos/world.jpg?raw=true" alt="world map" width="550">
+<img align="right" src="https://github.com/julieanneco/predictingHDI/blob/photos/world.png?raw=true" alt="world map" width="550">
 <!-- Table of Contents -->
 <b>Table of Contents</b>
   <ol>
