@@ -282,9 +282,15 @@ Building the models.
 <!-- Random Forest Regression -->
 ## Random Forest Regression
 
+Random Forest Regression
+
 
 <!-- Random Forest Classification -->
 ## Random Forest Classification
+
+
+Random Forest Classification
+
 
 <!-- Conclusion -->
 
@@ -301,7 +307,7 @@ Project Link: [link](https://github.com/julieanneco/predictingHDI)
 
 
 <!-- ACKNOWLEDGEMENTS -->
-### Acknowledgements
+## Acknowledgements
 <b>Packages Utilized:</b>
 * [WDI](https://www.rdocumentation.org/packages/WDI/versions/2.7.1)
 * [plyr](https://www.rdocumentation.org/packages/plyr/versions/1.8.6)
@@ -314,5 +320,5 @@ Project Link: [link](https://github.com/julieanneco/predictingHDI)
 * [randomForest](https://www.rdocumentation.org/packages/randomForest/versions/4.6-14/topics/randomForest)
 * [caTools](https://www.rdocumentation.org/packages/caTools/versions/1.17.1)
 
-### References
+## References
 Van der Mensbrugghe, Dominique. (2016). Using R to Extract Data from the World Bank's World Development Indicators. <i>Journal of Global Economic Analysis</i>. 1. 251-283. 10.21642/JGEA.010105AF. 
