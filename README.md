@@ -266,7 +266,7 @@ F-statistic: 4.217e+04 on 1 and 4676 DF,  p-value: < 2.2e-16
 <br />
 <br />
 
-<img align="left" src="https://github.com/julieanneco/predictingHDI/blob/photos/gdp.png?raw=true" alt="gdp per capita" height="100">
+<img align="left" src="https://github.com/julieanneco/predictingHDI/blob/photos/gdp.png?raw=true" alt="gdp per capita" height="220">
 <br />
 
 <b>GDP Per Capita and HDI</b>
