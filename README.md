@@ -320,7 +320,16 @@ Project Link: [link](link)
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
-* [Package](link)
+* [WDI](https://www.rdocumentation.org/packages/WDI/versions/2.7.1)
+* [plyr](https://www.rdocumentation.org/packages/plyr/versions/1.8.6)
+* [tidyr](https://www.rdocumentation.org/packages/tidyr/versions/0.8.3)
+* [corrplot](https://www.rdocumentation.org/packages/corrplot/versions/0.84)
+* [RColorBrewer](https://www.rdocumentation.org/packages/RColorBrewer/versions/1.1-2)
+* [ggplot2](https://www.rdocumentation.org/packages/ggplot2/versions/3.3.2)
+* [ggpubr](https://www.rdocumentation.org/packages/ggpubr/versions/0.4.0)
+* [caret](https://www.rdocumentation.org/packages/caret/versions/6.0-86)
+* [randomForest](https://www.rdocumentation.org/packages/randomForest/versions/4.6-14/topics/randomForest)
+* [caTools](https://www.rdocumentation.org/packages/caTools/versions/1.17.1)
 
 ## References
 https://pdfs.semanticscholar.org/d19f/09842ed6d44a4da9bc8043ec713f3b61c8b2.pdf
