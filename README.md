@@ -315,7 +315,7 @@ Building the models.
 
 Julie Anne Hockensmith
 
-Project Link: [link](link)
+Project Link: [link](https://github.com/julieanneco/predictingHDI)
 
 
 <!-- ACKNOWLEDGEMENTS -->
