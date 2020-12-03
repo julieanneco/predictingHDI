@@ -52,14 +52,20 @@ The WDI library is installed and loaded like any other package
 library(WDI)
 ```
 
-To create the final dataframe(s), I first created an individual dataframe for each indicator I wanted to analyze. I selected the years 1990 to 2018 because data is more sparse in earlier years. By creating a seperate dataframe for each indicator, I was able to more easily analyze and update each one as needed throughout the process. However, it is possible to create a single dataframe for all indicators with the code:
+Code for downloading data from the WDI API
 ```r
-dataframe = WDI(country="all", indicator= c("vector code","vector code", etc.),start=year, end=year)
+# multiple indicators into a single dataframe
+dataframe = WDI(indicator= c("vector code","vector code", etc.), country="all", start=year, end=year)
+
+# single indicator into a single data frame
+dataframe = WDI(indicator='vector code', country="all", start=year, end=year)
 ```
 
-I used WDI API functions to download the following indicators:
-```r
-# Population 	
+Creating a final data frame for the prediction model required multiple steps.
+
+I first created an individual dataframe for each indicator I wanted to analyze. I selected the years 1990 to 2018 because data is more sparse in earlier years. By creating a seperate dataframe for each indicator, I was able to more easily analyze and update each one as needed throughout the process. However, it is possible to create a single dataframe for all indicators with the code:
+
+<dt>Population</dt>
 population = WDI(indicator='SP.POP.TOTL', country="all",start=1990, end=2018)
 # GDP (USD)
 gdp = WDI(indicator='NY.GDP.MKTP.CD', country="all",start=1990, end=2018)
