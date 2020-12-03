@@ -66,7 +66,7 @@ Creating a final data frame for the prediction model required multiple steps.
 I first created an individual dataframe for each indicator I wanted to analyze. I selected the years 1990 to 2018 because data is more sparse in earlier years. By creating a seperate dataframe for each indicator, I was able to more easily analyze and update each one as needed throughout the process. However, it is possible to create a single dataframe for all indicators with the code:
 
 <ul>
-<li>Population
+<dl>Population
 <li>GDP per capita (constant 2010 US$)	
 <li>GDP Per capita income
 <li>Population density (people per sq. km of land area)	
