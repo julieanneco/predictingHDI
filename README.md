@@ -320,6 +320,7 @@ Project Link: [link](link)
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
+<b>Packages Utilized:</b>
 * [WDI](https://www.rdocumentation.org/packages/WDI/versions/2.7.1)
 * [plyr](https://www.rdocumentation.org/packages/plyr/versions/1.8.6)
 * [tidyr](https://www.rdocumentation.org/packages/tidyr/versions/0.8.3)
