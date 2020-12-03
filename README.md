@@ -200,7 +200,7 @@ This resulted in the following:
   </tr>
 </table>
 
-I decided to exclude any indicators with more than 15% NULL values. Unfortunatly, this meant I was left without any education indicators. Still, given this cut off, I then joined the individual data frames with lower than 15% NULL values to create a single dataframe called <b>WDI.key</b>. I then joined this data frame to the country details in WDI in case I need to analyze at various levels in the future. This is the resulting data frame structure.
+I decided to exclude any indicators with more than 15% NULL values. Unfortunatly, this meant I was left without any education indicators. Nonetheless, I joined the individual data frames with less than 15% NULL values to create a single dataframe called <b>WDI.key</b>. I then joined this data frame to the country details in WDI in case I want to analyze at various levels in the future. This is the resulting data frame structure.
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/WDI.key.png?raw=true" alt="WDI.key" width="650">
 
@@ -209,8 +209,8 @@ I decided to exclude any indicators with more than 15% NULL values. Unfortunatly
 UNDP Human Development Data can easily be downloaded as csv files at http://hdr.undp.org/en/data. I downloaded the files and cleaned up country names to match the WDI names using Excel before importing into R. It is possible to do this in R, but I felt Excel was more efficient. The UNDP data being joined to the WDI data includes:
 
 <ul>
-      <li>Human Development Indicator (HDI)
       <li>GNI Per Capita
+      <li>Human Development Indicator (HDI)
       <li>Education Index
       <li>Income Index
 </ul>
