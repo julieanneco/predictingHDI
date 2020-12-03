@@ -266,7 +266,7 @@ F-statistic: 4.217e+04 on 1 and 4676 DF,  p-value: < 2.2e-16
 <br />
 <br />
 
-<img align="left" src="https://github.com/julieanneco/predictingHDI/blob/photos/gdp.png?raw=true" alt="gdp per capita" height="220">
+<img align="left" src="https://github.com/julieanneco/predictingHDI/blob/photos/gdp.png?raw=true" alt="gdp per capita" width="350">
 <br />
 <br />
 <b>GDP Per Capita and HDI</b>
@@ -293,7 +293,6 @@ F-statistic: 2.091e+04 on 1 and 4676 DF,  p-value: < 2.2e-16
 <br />
 <br />
 <img align="left" src="https://github.com/julieanneco/predictingHDI/blob/photos/lifeexp.png?raw=true" alt="life expectancy" width="350">
-<br />
 <br />
 <b>Life Expectancy and HDI</b>
 
