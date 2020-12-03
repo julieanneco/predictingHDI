@@ -66,68 +66,29 @@ Creating a final data frame for the prediction model required multiple steps.
 I first created an individual dataframe for each indicator I wanted to analyze. I selected the years 1990 to 2018 because data is more sparse in earlier years. By creating a seperate dataframe for each indicator, I was able to more easily analyze and update each one as needed throughout the process. However, it is possible to create a single dataframe for all indicators with the code:
 
 <ul>
-<li>Population</li>
-population = WDI(indicator='SP.POP.TOTL', country="all",start=1990, end=2018)
+<li>Population
+<li>GDP per capita (constant 2010 US$)	
+<li>GDP Per capita income
+<li>Population density (people per sq. km of land area)	
+<li>Greenhouse Gas Emissions (kt)
+<li>Total C02 emissions (kt)
+<li>CO2 emissions (metric tons per capita)
+<li>PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)	
+<li>Birth rate, crude (per 1,000 people)	
+<li>Fertility rate, total (births per woman)	
+<li>Imports of goods and services (% of GDP)	
+<li>Exports of goods and services (% of GDP)		
+<li>Life expectancy at birth, total (years)	
+<li>Mortality rate, infant (per 1,000 live births)	
+<li>Mortality rate, under-5 (per 1,000 live births)	
+<li>Unemployment, total (% of total labor force) (modeled ILO estimate)	
+<li>Adjusted net enrolment rate, lower secondary
+<li>Adjusted net enrolment rate, primary	
+<li>Adjusted net enrolment rate, upper secondary
+<li>Adult literacy rate, population 15+ years, both sexes (%)	SE.ADT.LITR.ZS
+<li>Initial government funding of education as a percentage of GDP (%)
+<li>Expected Years Of School
 </ul>
-# GDP (USD)
-gdp = WDI(indicator='NY.GDP.MKTP.CD', country="all",start=1990, end=2018)
-# GDP per capita (constant 2010 US$)	
-gdp.pc = WDI(indicator='NY.GDP.PCAP.KD', country="all",start=1990, end=2018)
-# GDP Per capita income
-gdp.pc.income = WDI(indicator='NY.GDP.PCAP.PP.CD', country="all",start=1990, end=2018)
-# Population density (people per sq. km of land area)	
-pop.density = WDI(indicator='EN.POP.DNST', country="all",start=1990, end=2018)
-# Greenhouse Gas Emissions (kt)
-greenhouse.gas = WDI(indicator='EN.ATM.GHGT.KT.CE', country="all",start=1990, end=2018)
-# Methane emissions (kt of CO2 equivalent)	
-methane.emis = WDI(indicator='EN.ATM.METH.KT.CE', country="all",start=1990, end=2018)
-# Total C02 emissions (kt)
-co2 = WDI(indicator='EN.ATM.CO2E.KT', country="all",start=1990, end=2018) 
-# CO2 emissions (metric tons per capita)
-co2.pc = WDI(indicator='EN.ATM.CO2E.PC', country="all",start=1990, end=2018)
-# PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)	
-pollution.expose = WDI(indicator='EN.ATM.PM25.MC.M3', country="all",start=1990, end=2018)
-# Agricultural land (% of land area)	
-agri.land = WDI(indicator='AG.LND.AGRI.ZS', country="all",start=1990, end=2018)
-# Agricultural methane emissions (thousand metric tons of CO2 equivalent)	
-agri.methane = WDI(indicator='EN.ATM.METH.AG.KT.CE', country="all",start=1990, end=2018)
-# Birth rate, crude (per 1,000 people)	
-birth.rate = WDI(indicator='SP.DYN.CBRT.IN', country="all",start=1990, end=2018)
-# Fertility rate, total (births per woman)	
-fertility.rate = WDI(indicator='SP.DYN.TFRT.IN', country="all",start=1990, end=2018)
-# Imports of goods and services (% of GDP)	
-imports.gs = WDI(indicator='NE.IMP.GNFS.ZS', country="all",start=1990, end=2018)
-# Exports of goods and services (% of GDP)	
-exports.gs = WDI(indicator='NE.EXP.GNFS.ZS', country="all",start=1990, end=2018)
-# International tourism, number of arrivals	
-tourist.arrivals = WDI(indicator='ST.INT.ARVL', country="all",start=1990, end=2018)
-# International tourism, expenditures (% of total imports)	
-toursit.exp = WDI(indicator='ST.INT.XPND.MP.ZS', country="all",start=1990, end=2018)
-# International tourism, receipts (current US$)	
-tourist.receipts = WDI(indicator='ST.INT.RCPT.CD', country="all",start=1990, end=2018)
-# Land area (sq. km)	
-land.area = WDI(indicator='AG.LND.TOTL.K2', country="all",start=1990, end=2018)
-# Life expectancy at birth, total (years)	
-life.exp = WDI(indicator='SP.DYN.LE00.IN', country="all",start=1990, end=2018)
-# Mortality rate, infant (per 1,000 live births)	
-infant.mort.rate = WDI(indicator='SP.DYN.IMRT.IN', country="all",start=1990, end=2018)
-# Mortality rate, under-5 (per 1,000 live births)	
-under5.mort.rate = WDI(indicator='SH.DYN.MORT', country="all",start=1990, end=2018)
-# Unemployment, total (% of total labor force) (modeled ILO estimate)	
-unemployment = WDI(indicator='SL.UEM.TOTL.ZS', country="all",start=1990, end=2018)
-# Adjusted net enrolment rate, lower secondary
-edu.lower = WDI(indicator='UIS.NERA.2', country="all",start=1990, end=2018)
-# Adjusted net enrolment rate, primary	
-edu.primary = WDI(indicator='SE.PRM.TENR', country="all",start=1990, end=2018)
-# Adjusted net enrolment rate, upper secondary
-edu.upper = WDI(indicator='UIS.NERA.3', country="all",start=1990, end=2018)
-# Adult literacy rate, population 15+ years, both sexes (%)	SE.ADT.LITR.ZS
-literacy = WDI(indicator='SE.ADT.LITR.ZS', country="all",start=1990, end=2018)
-# Initial government funding of education as a percentage of GDP (%)
-edu.funding = WDI(indicator='UIS.XGDP.FSGOV.FFNTR', country="all",start=1990, end=2018)
-#Expected Years Of School
-edu.years = WDI(indicator='HD.HCI.EYRS', country="all",start=1990, end=2018)
-```
 
 <b>Preparing the Data for Analysis</b>
 
