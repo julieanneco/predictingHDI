@@ -1,7 +1,7 @@
-# Predicting the Human Development Index with Random Forest Machine Learning 
+# Predicting the Human Development Index
 Under Construction
 
-#### <i>Building a supervised machine learning model to predict the Human Development Index (HDI) based on World Development Indicators (WDI) and UNDP Data.</i>
+### <i>Building a supervised random forest machine learning model to predict the Human Development Index (HDI) based on World Development Indicators (WDI) and UNDP Data.</i>
 <br />
 
 <img align="right" src="https://github.com/julieanneco/predictingHDI/blob/photos/world.png?raw=true" alt="world map" width="500">
