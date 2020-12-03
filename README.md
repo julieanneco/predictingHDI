@@ -237,6 +237,8 @@ The strength of the correlation is indicated by the pies. Blue indicates a posit
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/matrix2.png?raw=true" alt="Scatterplot Matrix" width="650">
 
+
+
 <!-- Random Forest Regression -->
 ## Random Forest Regression
 
