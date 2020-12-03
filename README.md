@@ -86,7 +86,7 @@ To download the data for this project, I created individual data frames for each
 </ul>
 
 
-<b><i>Preparing and joining the data for analysis</b></i>
+<b><i>Cleaning and joining WDI data</b></i>
 
 The API function only downloads each indicator with the region, country code, and indicator vector code. To prepare and clean the data, I renamed the indicator column to a recognizable name. Later I will need to join to country data.
 ```r
@@ -204,83 +204,20 @@ I decided to exclude any indicators with more than 15% NULL values. Unfortunatly
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/WDI.key.png?raw=true" alt="WDI.key" width="650">
 
+<b><i>Adding UNDP Data</b></i>
 
-Check number of unique countries before joining to UNDP data
-```{r cache=TRUE}
-sapply(WDI.key, function(x) length(unique(x)))
-```
+UNDP Human Development Data can easily be downloaded as csv files at http://hdr.undp.org/en/data. I downloaded the files and cleaned up country names to match the WDI names using Excel before importing into R. It is possible to do this in R, but I felt Excel was more efficient. The UNDP data being joined to the WDI data includes:
 
+<ul>
+      <li>Human Development Indicator (HDI)
+      <li>GNI Per Capita
+      <li>Education Index
+      <li>Income Index
+</ul>
 
-<b>GATHERING AND JOINING UNDP DATA</b>
+After a bit of clean up, joining the UNDP data to the WDI.key data frame, and validation, this is the resulting final <b>key.ind</b> data frame of the Data Engineering phase that will be used for exploratory analysis.  
 
-UNDP Human Development Data can easily be downloaded as csv files here: http://hdr.undp.org/en/data
-Note: I cleaned up country names to match WDI names using Excel before importing as this is the quickest and easiest method. 
-
-```{r}
-library(tidyr)
-library(dplyr)
-#import
-GNI.pc <- read.csv("~/Desktop/GNI_pc.csv", na.strings="NULL")
-GNI.pc
-```
-
-Gather and clean
-```{r}
-#use gather function to convert years to a single column to match WDI data
-gni.pc <- gather(GNI.pc, year, gni.pc, X1990:X2018, convert = TRUE)
-#clean up the X in front of the year that happened during import
-gni.pc$year <- gsub('X', '', gni.pc$year)
-#convert year from character to numeric
-gni.pc <- transform(gni.pc, year = as.numeric(year))
-gni.pc <- transform(gni.pc, gni.pc = as.numeric(gni.pc))
-#join to WDI data
-key.ind = join(WDI.key, gni.pc, by = c("year" = "year", "country" = "country"))
-```
-#verify that the number of countries is still the same and that the join worked properly
-```{r}
-sapply(key.ind, function(x) length(unique(x)))
-```
-
-gni.pc has been appeneded to the first dataframe and the unique country count is still 217 
-
-Repeat for remaining indeces
-```{r}
-#Human Development Index
-hdi <- read.csv("~/Desktop/human_dev_index.csv", na.strings="NULL")
-hdi <- gather(hdi, year, hdi, X1990:X2018, convert = TRUE)
-hdi$year <- gsub('X', '', hdi$year)
-hdi <- transform(hdi, year = as.numeric(year))
-hdi <- transform(hdi, hdi = as.numeric(hdi))
-key.ind = join(key.ind, hdi, by = c("year" = "year", "country" = "country"))
-sapply(key.ind, function(x) length(unique(x)))
-```
-
-```{r}
-#Education Index
-edu.index <- read.csv("~/Desktop/Education_Index.csv", na.strings="NULL")
-edu.index <- gather(edu.index, year, edu.index, X1990:X2018, convert = TRUE)
-edu.index$year <- gsub('X', '', edu.index$year)
-edu.index <- transform(edu.index, year = as.numeric(year))
-edu.index <- transform(edu.index, edu.index = as.numeric(edu.index))
-key.ind = join(key.ind, edu.index, by = c("year" = "year", "country" = "country"))
-sapply(key.ind, function(x) length(unique(x)))
-```
-
-
-```{r}
-#Income Index
-income.index <- read.csv("~/Desktop/Income_Index.csv", na.strings="NULL")
-income.index <- gather(income.index, year, income.index, X1990:X2018, convert = TRUE)
-income.index$year <- gsub('X', '', income.index$year)
-income.index <- transform(income.index, year = as.numeric(year))
-income.index <- transform(income.index, income.index = as.numeric(income.index))
-key.ind = join(key.ind, income.index, by = c("year" = "year", "country" = "country"))
-sapply(key.ind, function(x) length(unique(x)))
-```
-
-```{r}
-str(key.ind)
-```
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/key.ind.png?raw=true" alt="key.ind" width="650">
 
 
 <!-- Exploratory Data Analysis -->
