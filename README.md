@@ -203,7 +203,7 @@ This resulted in the following:
 </table>
 
 I decided to exclude any indicators with more than 15% NULL values. Unfortunatly, this meant I was left without any education indicators. Still, given this cut off, I then joined the individual data frames with lower than 15% NULL values to create a single dataframe called <b>WDI.key</b>. I then joined this data frame to the country details in WDI in case I need to analyze at various levels in the future. This is the resulting data frame structure.
-
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/WDI.key.jpg?raw=true" alt="world map" width="620" >
 
 The new data frame given only a code for each country and the country name as it's region. I will join to the countries table in WDI.data to get the actual country name, along with details about the country. 
 ```r
