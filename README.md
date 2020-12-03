@@ -240,8 +240,12 @@ The strength of the correlation is indicated by the pies. Blue indicates a posit
 Individually, each variable has strong linear regression and low p-values. The only variable with more of an exponential trend is GDP Per Capita. For the model, I removed outliers, but chose to include this variable because GDP, while not the only factor, can be a key indicator in determining human development. 
 
 <img align="left" src="https://github.com/julieanneco/predictingHDI/blob/photos/birth.png?raw=true" alt="birth rate" width="350">
+Birth Rate and HDI
+
 Residual standard error: 0.07639 on 4676 degrees of freedom
-Multiple R-squared:  0.7881,	Adjusted R-squared:  0.7881 
+
+Multiple R-squared:  0.7881,	Adjusted R-squared:  0.7881
+
 F-statistic: 1.739e+04 on 1 and 4676 DF,  p-value: < 2.2e-16
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/edu.png?raw=true" alt="edu index" width="350">
