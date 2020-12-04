@@ -1,0 +1,186 @@
+---
+title: "HDI Prediction Model: Building Random Forest Models"
+author: "Julie Anne Hockensmith"
+date: "December 2020"
+output: pdf.document
+---
+
+#installations
+install.packages("caret") 
+install.packages("randomForest") 
+install.packages("caTools") h
+
+
+#   ----------------- SUPERVISED RANDOM FOREST REGRESSION -----------------
+
+```{r}
+# Using the final data frame from Exploratory Analysis (predict.hdi), split data into 90% for training and 10% for testing
+library(caret)
+set.seed(123)
+hdi.samples <- predict.hdi$hdi %>%
+  createDataPartition(p = 0.9, list = FALSE)
+train.hdi  <- predict.hdi[hdi.samples, ]
+test.hdi <- predict.hdi[-hdi.samples, ]
+```
+
+```{r}
+library(randomForest)
+# random forest for regression, starting with 500 trees and mtry of 3
+hdi.rf.1 <- randomForest(hdi ~ ., data = train.hdi, ntree=500, mtry = 3, 
+						importance = TRUE, na.action = na.omit) 
+print(hdi.rf.1) 
+# Plot the error vs the number of trees graph 
+plot(hdi.rf.1) 
+```
+
+```{r}
+#Tune to determine if there is a better mtry value with the smallest out of bag (OOB) error
+mtry <- tuneRF(train.hdi[-6],train.hdi$hdi, ntreeTry=500,
+               stepFactor=1,improve=0.01, trace=TRUE, plot=FALSE)
+print(mtry)
+```
+### Fine tuning with a step factor of 1 and looking for minimal OBB improvements (.01) only returned 1 mtry with improvement. Let's re-fit the model using mtry 1.
+
+```{r}
+set.seed(123)
+# random forest for regression with mtry=1
+hdi.rf.2 <- randomForest(hdi ~ ., data = train.hdi, ntree=500, mtry = 1, 
+						importance = TRUE, na.action = na.omit) 
+print(hdi.rf.2) 
+# Plot the error vs the number of trees graph 
+plot(hdi.rf.2) 
+```
+
+```{r}
+# Make predictions on the test data using model 1 (mtry = 3)
+hdi.predictions.3 <- hdi.rf.1 %>% predict(test.hdi)
+head(hdi.predictions.3)
+# Make predictions on the test data using model 2 (mtry = 1)
+hdi.predictions.1 <- hdi.rf.2 %>% predict(test.hdi)
+head(hdi.predictions.1)
+```
+
+```{r}
+#Calculate prediction error average -- root-mean-square error (RMSE) of both models
+RMSE(hdi.predictions.3, test.hdi$hdi)
+RMSE(hdi.predictions.1, test.hdi$hdi)
+```
+### The original model with mtry=3 (hdi.rf.1) actually has a lower RMSE so that is the best model moving forward. An RMSE of .0087 is considerably low and indicates a highly valid prediction model. Let's look at the significance of each variable to see possible mean changes.
+
+```{r}
+#Evaluate variable importance
+importance(hdi.rf.1)
+varImpPlot(hdi.rf.1)
+```
+### Based on the importance of each variable with a mean squared error increase all between 23% and 75%, I will not remove any variables from the model.GDP Per capita is actually a very strong predictor when using random forest.
+
+###Join predictions to test table ******************
+```{r}
+# convert predictions to a data frame 
+hdi.pred.rfr <- as.data.frame(hdi.predictions.3)
+# merge on index
+hdi.pred.rfr <- merge(test.hdi, hdi.pred.rfr, by.x = 0, by.y = 0, all.x = TRUE, all.y = TRUE)
+# create a new calculated column that subtracts the actual hdi by the prediction
+hdi.pred.rfr$diff <- with(hdi.pred.rfr, hdi.pred.rfr$hdi - hdi.pred.rfr$hdi.predictions.3)
+# get the mean of the difference
+hdi.pred.rfr
+mean(hdi.pred.rfr[,"diff"]) 
+```
+### The model has predicted with an average distance of -.00051 from the actual HDI value. This certainly confirms the low RMSE.
+
+### Plot predictions versus actual human development index
+```{r}
+# Reset row index (row.names)
+rownames(hdi.pred.rfr ) <- NULL
+# Sort data
+hdi.pred.rfr <- hdi.pred.rfr[order(hdi.pred.rfr$hdi),]
+# Plot both lines to see error
+plot(hdi.pred.rfr$hdi.predictions.3,type = "l", col="red",xlab="Tested Data", ylab="Actual vs. Predicted", main="Prediction Variance") +
+  lines(hdi.pred.rfr$hdi, lwd=2)
+```
+### Based on the graph, the model seems to predict higher HDI's better than lower ones, but only by a minimal amount.
+
+
+#   ----------------- SUPERVISED RANDOM FOREST CLASSIFICATION -----------------
+
+```{r}
+# Create a second data frame for predicting hdi using random forest classification
+predict.hdi.2 <- data.frame(key.ind$birth.rate, key.ind$infant.mort.rate, key.ind$gdp.pc, key.ind$edu.index, key.ind$life.exp, key.ind$hdi)
+# rename columns
+names(predict.hdi.2)[1]="birth.rate"
+names(predict.hdi.2)[2]="infant.mort.rate"
+names(predict.hdi.2)[3]="gdp.pc"
+names(predict.hdi.2)[4]="edu.index"
+names(predict.hdi.2)[5]="life.exp"
+names(predict.hdi.2)[6]="hdi"
+# remove nulls
+cc = complete.cases(predict.hdi.2)
+predict.hdi.2 = predict.hdi.2[cc,]
+```
+
+### For classification, I will convert the HDI into 3 categories based on the score
+```{r}
+# Change the human development index to categorical variables based on the index score:
+predict.hdi.2$hdi.cat[predict.hdi.2$hdi < .650 ] = "Low"
+predict.hdi.2$hdi.cat[predict.hdi.2$hdi > .850 ] = "High"
+predict.hdi.2$hdi.cat[is.na(predict.hdi.2$hdi.cat)] <- "Mid"
+
+# Make new hdi.cat field a factor with 3 levels
+(predict.hdi.2$hdi.cat = factor(predict.hdi.2$hdi.cat, levels=c("Low", "Mid", "High")))
+
+predict.hdi.2
+```
+
+```{r}
+# Split data frame into 80% for training and 20% for testing. (caTools is another way to create a partition)
+library(caTools)
+set.seed(123)
+split = sample.split(predict.hdi.2$hdi.cat, SplitRatio = 0.80)
+hdi.training.set = subset(predict.hdi.2, split == TRUE)
+hdi.test.set = subset(predict.hdi.2, split == FALSE)
+```
+
+```{r}
+# random forest for classification
+hdi.rfc = randomForest(x = hdi.training.set[1:5],
+                        y = hdi.training.set$hdi.cat,
+                        ntree = 500, random_state = 0)
+print(hdi.rfc) 
+# plot the trees
+plot(hdi.rfc) 
+```
+
+```{r}
+#test mtry
+mtry <- tuneRF(hdi.training.set[-6],hdi.training.set$hdi.cat, ntreeTry=500,
+               stepFactor=1,improve=0.01, trace=TRUE, plot=FALSE)
+print(mtry)
+```
+
+# mtry=2 is the default, so I will keep as is. The final model has an OOB error rate of 0%
+
+```{r}
+#Evaluate variable importance
+importance(hdi.rfc)
+varImpPlot(hdi.rfc)
+```
+### Keep all variables
+
+```{r}
+#Make predictions on test data (columns 1 through 5)
+hdi.pred.rfc = predict(hdi.rfc, newdata = hdi.test.set[1:5])
+summary(hdi.pred.rfc)
+```
+
+```{r}
+# Create confusion matrix to see accuracyof test data predictions
+table(hdi.test.set[, 7], hdi.pred.rfc)
+```
+
+```{r}
+# Error Rate of test predictions
+14/935*100
+```
+### The OOB estimated error rate for the model during training was 1.84%. With the confusion matrix, we can see that the test predictions had an error rate of 1.497%. The model is predicting the Human Development Index category quite accurately.
+
+

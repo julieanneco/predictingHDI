@@ -1,0 +1,168 @@
+---
+title: "HDI Prediction Model: Exploratory Data Analysis"
+author: "Julie Anne Hockensmith"
+date: "December 2020"
+output: pdf.document
+---
+
+installations
+install.packages("corrplot")
+install.packages("RColorBrewer")
+install.packages("ggplot2")
+install.packages("ggpubr")
+
+
+# -----ANALYZING THE DATA-----
+
+#### To start, I want a very basic correlation matrix of each data frame to see if any patterns stand out
+```{r}
+#Create a new data frame that removes any rows with nulls
+cc = complete.cases(key.ind)
+key.corr = key.ind[cc,]
+```
+
+#### This reduced the data frame by a few thousand rows, but we still have plenty of data to look at a correlation matrix and determine some possible patterns to use in a regression training model. Because the correlation matrix requires only numeric values, first I will remove any columns that are not num.
+```{r}
+#Remove non-numerical columns
+key.corr$iso2c <- NULL 
+key.corr$country <- NULL 
+key.corr$year <- NULL
+key.corr$iso3c <- NULL
+key.corr$region <- NULL
+key.corr$capital <- NULL
+key.corr$longitude <- NULL
+key.corr$latitude <- NULL
+key.corr$income <- NULL
+key.corr$lending <- NULL
+```
+
+### Correlation Matrix using Corrplot
+```{r}
+library(corrplot)
+library(RColorBrewer)
+Matrix <-cor(key.corr)
+corrplot(Matrix, type="upper", order="hclust", method="pie",
+         col=brewer.pal(n=8, name="RdYlBu"))
+```
+### There is a lot of strong correlation here. Looking at just hdi (human development index), I will take the variables with the strongest correlation and create a smaller data frame. 
+```{r}
+# Create data frame for (Human Development Index ~ birth rate, infant mortality, gdp per capita, education index, life expectancy)
+predict.hdi <- data.frame(key.ind$birth.rate, key.ind$infant.mort.rate, key.ind$gdp.pc, key.ind$edu.index, key.ind$life.exp, key.ind$hdi)
+#rename columns
+names(predict.hdi)[1]="birth.rate"
+names(predict.hdi)[2]="infant.mort.rate"
+names(predict.hdi)[3]="gdp.pc"
+names(predict.hdi)[4]="edu.index"
+names(predict.hdi)[5]="life.exp"
+names(predict.hdi)[6]="hdi"
+#remove nulls
+cc = complete.cases(predict.hdi)
+predict.hdi = predict.hdi[cc,]
+str(predict.hdi)
+```
+
+### Plot the correlation as a scatterplot matrix.
+```{r}
+plot(predict.hdi, pch=1 , cex=.2, col=rgb(0,0,0,0.4) , main = "Matrix Scatterplot of Variables with Strong Correlation to HDI")
+```
+
+### There is a lot of linear regression to show some kind of relationship between the variables. Only GDP per capita has more of a sharp exponential curve, so outliers may need to be removed.
+
+```{r}
+library(ggpubr)
+# Create a scatterplot with a regression line for hdi and birth rate
+ggscatter(predict.hdi, x = "birth.rate", y = "hdi", color=rgb(1,.8,0,.3),pch=1,
+   add = "reg.line", add.params = list(color=rgb(0,.4,.4,  1), fill = "light gray"),
+   conf.int = TRUE)
+# Print F Stats to see linear regression significance test
+summary(lm(hdi ~ birth.rate, data=predict.hdi))
+```
+# Negative correlation (as birth rate goes up, HDI goes down). 
+# P-value much less than .05
+
+```{r}
+# Infant Mortality Rate
+ggscatter(predict.hdi, x = "infant.mort.rate", y = "hdi", color=rgb(1,.8,0,.3),pch=1,
+   add = "reg.line", add.params = list(color=rgb(0,.4,.4,  1), fill = "light gray"),
+   conf.int = TRUE)
+summary(lm(hdi ~ infant.mort.rate, data=predict.hdi))
+```
+# # Negative correlation (as infant mortality goes up, HDI goes down). 
+# P-value much less than .05
+
+```{r}
+#GDP Per Capita
+ggscatter(predict.hdi, x = "gdp.pc", y = "hdi", color=rgb(1,.8,0,.3),pch=1,
+   add = "reg.line", add.params = list(color=rgb(0,.4,.4,  1), fill = "light gray", main = "gdp pc"),
+   conf.int = TRUE)
+summary(lm(hdi ~ gdp.pc, data=predict.hdi))
+```
+# Despite a lack of strong regession, there appears to be a positive correlation.
+
+```{r}
+#Education Index
+ggscatter(predict.hdi, x = "edu.index", y = "hdi", color=rgb(1,.8,0,.3),pch=1,
+   add = "reg.line", add.params = list(color=rgb(0,.4,.4,  1), fill = "light gray"),
+   conf.int = TRUE)
+summary(lm(hdi ~ edu.index, data=predict.hdi))
+```
+### positive correlation (as edu.idex goes up, hdi goes up)
+### strong linear regression
+
+```{r}
+# Life Expectancy
+ggscatter(predict.hdi, x = "life.exp", y = "hdi", color=rgb(1,.8,0,.3),pch=1,
+   add = "reg.line", add.params = list(color=rgb(0,.4,.4,  1), fill = "light gray"),
+   conf.int = TRUE)
+summary(lm(hdi ~ life.exp, data=predict.hdi))
+```
+### positive correlation with strong linear regression (as life expectancy goes up, hdi goes up)
+
+###Deciles of Each Variable to find Possible Outliers
+```{r}
+print(paste0("Birth Rate"))
+quantile(predict.hdi$birth.rate, probs = seq(.1, 1, by = .1))
+print(paste0("Infant Mortality Rate"))
+quantile(predict.hdi$infant.mort.rate, probs = seq(.1, 1, by = .1))
+print(paste0("GDP Per Capita"))
+quantile(predict.hdi$gdp.pc, probs = seq(.1, 1, by = .1))
+print(paste0("Education Index"))
+quantile(predict.hdi$edu.index, probs = seq(.1, 1, by = .1))
+print(paste0("Life Expectancy"))
+quantile(predict.hdi$life.exp, probs = seq(.1, 1, by = .1))
+```
+#### There is a huge jump between 90% and 100% for both GDP Per Capita and Infant Mortality
+```{r}
+# Check each percentage between 90% and 100%
+print(paste0("Infant Mortality Rate"))
+quantile(predict.hdi$infant.mort.rate, probs = seq(.9, 1, by = .01))
+print(paste0("GDP Per Capita"))
+quantile(predict.hdi$gdp.pc, probs = seq(.9, 1, by = .01))
+```
+#### Remove outliers for GDP Per Capita and Infant Mortality Rate
+```{r}
+#In a new data frame, remove anything above 90% for infant mortality and gdp per capita  
+Q1 <- quantile(predict.hdi$infant.mort.rate, probs = c(.90))
+Q2 <- quantile(predict.hdi$gdp.pc, probs = c(.90))
+predict.hdi.out <- subset(predict.hdi, predict.hdi$infant.mort.rate < (Q1))
+predict.hdi.out <- subset(predict.hdi, predict.hdi$gdp.pc < (Q2))
+```
+
+```{r}
+#verify
+print(paste0("Infant Mortality Rate"))
+quantile(predict.hdi.out$infant.mort.rate, probs = seq(.1, 1, by = .1))
+print(paste0("GDP Per Capita"))
+quantile(predict.hdi.out$gdp.pc, probs = seq(.1, 1, by = .1))
+```
+
+```{r}
+# Re-run scatter of GDP Per Capita
+ggscatter(predict.hdi.out, x = "gdp.pc", y = "hdi", color=rgb(1,.8,0,.3),pch=1,
+   add = "reg.line", add.params = list(color=rgb(0,.4,.4,  1), fill = "light gray", main = "gdp pc"),
+   conf.int = TRUE)
+```
+#### Removing outliers helped, but still do not have a strong linear regression in comparison to the other variables, however, given the use of random forest regression, I will keep the data as-is and not remove outliers or exclude this variable unless the prediction model is strongly impacted. I really need an economic factor to be included and GDP per capita had the strongest correlation. At this point, I will not remove data that may be crucial to the model.
+
+
+

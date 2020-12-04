@@ -1,0 +1,332 @@
+---
+title: "HDI Prediction Model: Data Engineering"
+author: "Julie Anne Hockensmith"
+date: "December 2020"
+output: pdf.document
+---
+
+Installations:
+install.packages("WDI")
+install.packages("plyr")
+install.packages("tidyr")
+
+#### The WDI library is installed and loaded like any other package
+```{r echo=FALSE}
+library(WDI)
+```
+
+
+# -----SCRAPING WORLD BANK WDI DATA VIA API-----
+### To begin, I will create a dataframe for each indicator I'd like to analyze between the years 1990 and 2018 by scraping API data from the databank. Limiting to these years will reduce NULL values as data collection has increased in the last 2 decades. By creating a seperate dataframe for each, I am able to more easily analyze and update each indicator throughout the process. Once I have these dataframes, I will join them as a single data frame and then join to country data.
+```{r cache=TRUE}
+library(WDI)
+
+##Download data for various indicators to analyze (years 1990-2018 for all countries). This WDI function puts the downloaded data into individual data frames.
+
+# Population 	
+population = WDI(indicator='SP.POP.TOTL', country="all",start=1990, end=2018)
+# GDP per capita (constant 2010 US$)	
+gdp.pc = WDI(indicator='NY.GDP.PCAP.KD', country="all",start=1990, end=2018)
+# GDP Per capita income
+gdp.pc.income = WDI(indicator='NY.GDP.PCAP.PP.CD', country="all",start=1990, end=2018)
+# Population density (people per sq. km of land area)	
+pop.density = WDI(indicator='EN.POP.DNST', country="all",start=1990, end=2018)
+# Greenhouse Gas Emissions (kt)
+greenhouse.gas = WDI(indicator='EN.ATM.GHGT.KT.CE', country="all",start=1990, end=2018)
+# Total C02 emissions (kt)
+co2 = WDI(indicator='EN.ATM.CO2E.KT', country="all",start=1990, end=2018) 
+# CO2 emissions (metric tons per capita)
+co2.pc = WDI(indicator='EN.ATM.CO2E.PC', country="all",start=1990, end=2018)
+# PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)	
+pollution.expose = WDI(indicator='EN.ATM.PM25.MC.M3', country="all",start=1990, end=2018)
+# Birth rate, crude (per 1,000 people)	
+birth.rate = WDI(indicator='SP.DYN.CBRT.IN', country="all",start=1990, end=2018)
+# Fertility rate, total (births per woman)	
+fertility.rate = WDI(indicator='SP.DYN.TFRT.IN', country="all",start=1990, end=2018)
+# Imports of goods and services (% of GDP)	
+imports.gs = WDI(indicator='NE.IMP.GNFS.ZS', country="all",start=1990, end=2018)
+# Exports of goods and services (% of GDP)	
+exports.gs = WDI(indicator='NE.EXP.GNFS.ZS', country="all",start=1990, end=2018)
+# Life expectancy at birth, total (years)	
+life.exp = WDI(indicator='SP.DYN.LE00.IN', country="all",start=1990, end=2018)
+# Mortality rate, infant (per 1,000 live births)	
+infant.mort.rate = WDI(indicator='SP.DYN.IMRT.IN', country="all",start=1990, end=2018)
+# Mortality rate, under-5 (per 1,000 live births)	
+under5.mort.rate = WDI(indicator='SH.DYN.MORT', country="all",start=1990, end=2018)
+# Unemployment, total (% of total labor force) (modeled ILO estimate)	
+unemployment = WDI(indicator='SL.UEM.TOTL.ZS', country="all",start=1990, end=2018)
+# Adjusted net enrolment rate, lower secondary
+edu.lower = WDI(indicator='UIS.NERA.2', country="all",start=1990, end=2018)
+# Adjusted net enrolment rate, primary	
+edu.primary = WDI(indicator='SE.PRM.TENR', country="all",start=1990, end=2018)
+# Adjusted net enrolment rate, upper secondary
+edu.upper = WDI(indicator='UIS.NERA.3', country="all",start=1990, end=2018)
+# Adult literacy rate, population 15+ years, both sexes (%)	SE.ADT.LITR.ZS
+literacy = WDI(indicator='SE.ADT.LITR.ZS', country="all",start=1990, end=2018)
+# Initial government funding of education as a percentage of GDP (%)
+edu.funding = WDI(indicator='UIS.XGDP.FSGOV.FFNTR', country="all",start=1990, end=2018)
+#Expected Years Of School
+edu.years = WDI(indicator='HD.HCI.EYRS', country="all",start=1990, end=2018)
+```
+
+# -----PREPARING AND CLEANING WDI DATA-----
+
+### The dataframe has given the vector code only for each indicator. Rename the indicator column (column 3) from the vector name to a recognizable name.
+```{r cache=TRUE}
+names(population)[3]="population"
+names(gdp.pc)[3]="gdp.pc"
+names(gdp.pc.income)[3]="gdp.pc.income"
+names(pop.density)[3]="pop.density"
+names(greenhouse.gas)[3]="greenhouse.gas"
+names(co2)[3]="co2"
+names(co2.pc)[3]="co2.pc"
+names(pollution.expose)[3]="pollution.expose"
+names(birth.rate)[3]="birth.rate"
+names(fertility.rate)[3]="fertility.rate"
+names(imports.gs)[3]="imports.gs"
+names(exports.gs)[3]="exports.gs"
+names(life.exp)[3]="life.exp"
+names(infant.mort.rate)[3]="infant.mort.rate"
+names(under5.mort.rate)[3]="under5.mort.rate"
+names(unemployment)[3]="unemployment"
+names(edu.lower)[3]="edu.lower"
+names(edu.primary)[3]="edu.primary"
+names(edu.upper)[3]="edu.upper"
+names(literacy)[3]="literacy"
+names(edu.funding)[3]="edu.funding"
+names(edu.years)[3]="edu.years"
+```
+
+## For each indicator, count number of rows and total number of NULLS and then divide NULLS by rows to get a % of NULLS for each indicator
+```{r}
+print(paste0("population"))
+population.na <- as.data.frame(sum(is.na(population$population)))
+population.n <- as.data.frame(nrow(population))
+population.na$`sum(is.na(population$population))`/population.n$`nrow(population)`*100
+
+print(paste0("gdp.pc"))
+gdp.pc.na <- as.data.frame(sum(is.na(gdp.pc$gdp.pc)))
+gdp.pc.n <- as.data.frame(nrow(gdp.pc))
+gdp.pc.na$`sum(is.na(gdp.pc$gdp.pc))`/gdp.pc.n$`nrow(gdp.pc)`*100
+
+print(paste0("gdp.pc.income"))
+gdp.pc.income.na <- as.data.frame(sum(is.na(gdp.pc.income$gdp.pc.income)))
+gdp.pc.income.n <- as.data.frame(nrow(gdp.pc.income))
+gdp.pc.income.na$`sum(is.na(gdp.pc.income$gdp.pc.income))`/gdp.pc.income.n$`nrow(gdp.pc.income)`*100
+
+print(paste0("pop.density"))
+pop.density.na <- as.data.frame(sum(is.na(pop.density$pop.density)))
+pop.density.n <- as.data.frame(nrow(pop.density))
+pop.density.na$`sum(is.na(pop.density$pop.density))`/pop.density.n$`nrow(pop.density)`*100
+
+print(paste0("greenhouse.gas"))
+greenhouse.gas.na <- as.data.frame(sum(is.na(greenhouse.gas$greenhouse.gas)))
+greenhouse.gas.n <- as.data.frame(nrow(greenhouse.gas))
+greenhouse.gas.na$`sum(is.na(greenhouse.gas$greenhouse.gas))`/greenhouse.gas.n$`nrow(greenhouse.gas)`*100
+
+print(paste0("co2"))
+co2.na <- as.data.frame(sum(is.na(co2$co2)))
+co2.n <- as.data.frame(nrow(co2))
+co2.na$`sum(is.na(co2$co2))`/co2.n$`nrow(co2)`*100
+
+print(paste0("co2.pc"))
+co2.pc.na <- as.data.frame(sum(is.na(co2.pc$co2.pc)))
+co2.pc.n <- as.data.frame(nrow(co2.pc))
+co2.pc.na$`sum(is.na(co2.pc$co2.pc))`/co2.pc.n$`nrow(co2.pc)`*100
+
+print(paste0("pollution.expose"))
+pollution.expose.na <- as.data.frame(sum(is.na(pollution.expose$pollution.expose)))
+pollution.expose.n <- as.data.frame(nrow(pollution.expose))
+pollution.expose.na$`sum(is.na(pollution.expose$pollution.expose))`/pollution.expose.n$`nrow(pollution.expose)`*100
+
+print(paste0("birth.rate"))
+birth.rate.na <- as.data.frame(sum(is.na(birth.rate$birth.rate)))
+birth.rate.n <- as.data.frame(nrow(birth.rate))
+birth.rate.na$`sum(is.na(birth.rate$birth.rate))`/birth.rate.n$`nrow(birth.rate)`*100
+
+print(paste0("fertility.rate"))
+fertility.rate.na <- as.data.frame(sum(is.na(fertility.rate$fertility.rate)))
+fertility.rate.n <- as.data.frame(nrow(fertility.rate))
+fertility.rate.na$`sum(is.na(fertility.rate$fertility.rate))`/fertility.rate.n$`nrow(fertility.rate)`*100
+
+print(paste0("imports.gs"))
+imports.gs.na <- as.data.frame(sum(is.na(imports.gs$imports.gs)))
+imports.gs.n <- as.data.frame(nrow(imports.gs))
+imports.gs.na$`sum(is.na(imports.gs$imports.gs))`/imports.gs.n$`nrow(imports.gs)`*100
+
+print(paste0("exports.gs"))
+exports.gs.na <- as.data.frame(sum(is.na(exports.gs$exports.gs)))
+exports.gs.n <- as.data.frame(nrow(exports.gs))
+exports.gs.na$`sum(is.na(exports.gs$exports.gs))`/exports.gs.n$`nrow(exports.gs)`*100
+
+print(paste0("life.exp"))
+life.exp.na <- as.data.frame(sum(is.na(life.exp$life.exp)))
+life.exp.n <- as.data.frame(nrow(life.exp))
+life.exp.na$`sum(is.na(life.exp$life.exp))`/life.exp.n$`nrow(life.exp)`*100
+
+print(paste0("infant.mort.rate"))
+infant.mort.rate.na <- as.data.frame(sum(is.na(infant.mort.rate$infant.mort.rate)))
+infant.mort.rate.n <- as.data.frame(nrow(infant.mort.rate))
+infant.mort.rate.na$`sum(is.na(infant.mort.rate$infant.mort.rate))`/infant.mort.rate.n$`nrow(infant.mort.rate)`*100
+
+print(paste0("under5.mort.rate"))
+under5.mort.rate.na <- as.data.frame(sum(is.na(under5.mort.rate$under5.mort.rate)))
+under5.mort.rate.n <- as.data.frame(nrow(under5.mort.rate))
+under5.mort.rate.na$`sum(is.na(under5.mort.rate$under5.mort.rate))`/under5.mort.rate.n$`nrow(under5.mort.rate)`*100
+
+print(paste0("unemployment"))
+unemployment.na <- as.data.frame(sum(is.na(unemployment$unemployment)))
+unemployment.n <- as.data.frame(nrow(unemployment))
+unemployment.na$`sum(is.na(unemployment$unemployment))`/unemployment.n$`nrow(unemployment)`*100
+
+print(paste0("edu.lower"))
+edu.lower.na <- as.data.frame(sum(is.na(edu.lower$edu.lower)))
+edu.lower.n <- as.data.frame(nrow(edu.lower))
+edu.lower.na$`sum(is.na(edu.lower$edu.lower))`/edu.lower.n$`nrow(edu.lower)`*100
+
+print(paste0("edu.primary"))
+edu.primary.na <- as.data.frame(sum(is.na(edu.primary$edu.primary)))
+edu.primary.n <- as.data.frame(nrow(edu.primary))
+edu.primary.na$`sum(is.na(edu.primary$edu.primary))`/edu.primary.n$`nrow(edu.primary)`*100
+
+print(paste0("edu.upper"))
+edu.upper.na <- as.data.frame(sum(is.na(edu.upper$edu.upper)))
+edu.upper.n <- as.data.frame(nrow(edu.upper))
+edu.upper.na$`sum(is.na(edu.upper$edu.upper))`/edu.upper.n$`nrow(edu.upper)`*100
+
+print(paste0("literacy"))
+literacy.na <- as.data.frame(sum(is.na(literacy$literacy)))
+literacy.n <- as.data.frame(nrow(literacy))
+literacy.na$`sum(is.na(literacy$literacy))`/literacy.n$`nrow(literacy)`*100
+
+print(paste0("edu.funding"))
+edu.funding.na <- as.data.frame(sum(is.na(edu.funding$edu.funding)))
+edu.funding.n <- as.data.frame(nrow(edu.funding))
+edu.funding.na$`sum(is.na(edu.funding$edu.funding))`/edu.funding.n$`nrow(edu.funding)`*100
+
+print(paste0("edu.years"))
+edu.years.na <- as.data.frame(sum(is.na(edu.years$edu.years)))
+edu.years.n <- as.data.frame(nrow(edu.years))
+edu.years.na$`sum(is.na(edu.years$edu.years))`/edu.years.n$`nrow(edu.years)`*100
+```
+
+### I will not include indicators in the final data frame with a NULL count over 15% NULL.
+
+#### Join the data frames with NULL counts less than 15% to create a single dataframe
+```{r cache=TRUE}
+library(plyr)
+WDI.key <- join(population,pop.density, by = c("iso2c","year","country"))
+WDI.key <- join(WDI.key,gdp.pc, by = c("iso2c","year","country"))
+WDI.key <- join(WDI.key,gdp.pc.income, by = c("iso2c","year","country"))
+WDI.key <- join(WDI.key,co2, by = c("iso2c","year","country"))
+WDI.key <- join(WDI.key,co2.pc, by = c("iso2c","year","country"))
+WDI.key <- join(WDI.key,birth.rate, by = c("iso2c","year","country"))
+WDI.key <- join(WDI.key,life.exp, by = c("iso2c","year","country"))
+WDI.key <- join(WDI.key,infant.mort.rate, by = c("iso2c","year","country"))
+WDI.key <- join(WDI.key,unemployment, by = c("iso2c","year","country"))
+WDI.key <- join(WDI.key,under5.mort.rate, by = c("iso2c","year","country"))
+```
+
+#### The new data frame given only a code for each country and the country name as it's region. I will join to the countries table in WDI.data to get the actual country name, along with details about the country in case I want to look at various levels in future analysis.
+```{r cache=TRUE}
+# Create 2 new matrices
+wdi.data=WDI_data
+# All indicators in first matrix
+indicators=wdi.data[[1]]
+# Countries and regions in second matrix
+countries=wdi.data[[2]]
+# Create countries dataframe
+df = as.data.frame(countries)
+# Determine which countries are aggregated and not actual countries
+null.countries <- df$region != "Aggregates"
+# Remove countries that are aggregates
+countries.df <- df[null.countries,]
+# Create a subset of the WDI.ALL table and join to countries.df
+key.subset = subset(WDI.key, country %in% countries.df$country)
+WDI.key = join(key.subset,countries.df)
+```
+
+#### The indicator data now has the country name, along with some details, such as longitude/latitude and income category. These might be useful in later analysis.
+```{r cache=TRUE}
+str(WDI.key)
+```
+
+
+# -----JOINING UNDP DATA-----
+
+#### Before joining to UNDP data, check number of unique countries to validate each merge 
+```{r cache=TRUE}
+sapply(WDI.key, function(x) length(unique(x)))
+```
+
+
+# -----GATHERING AND JOINING UNDP DATA-----
+
+#### UNDP Human Development Data can easily be downloaded as csv files here: http://hdr.undp.org/en/data
+#### Note: I cleaned up country names to match using Excel before importing as this is the quickest and easiest method 
+
+```{r}
+#import
+GNI.pc <- read.csv("~/Desktop/GNI_pc.csv", na.strings="NULL")
+GNI.pc
+```
+#### This data is in columns, rather than rows like the WDI data. The year also ended up with an X during import. Use gather function to reorganize the data frame and clean up the data.
+```{r}
+library(tidyr)
+#use gather function to convert years to a single column to match WDI data
+gni.pc <- gather(GNI.pc, year, gni.pc, X1990:X2018, convert = TRUE)
+#clean up the X in front of the year that happened during import
+gni.pc$year <- gsub('X', '', gni.pc$year)
+#convert year from character to numeric
+gni.pc <- transform(gni.pc, year = as.numeric(year))
+gni.pc <- transform(gni.pc, gni.pc = as.numeric(gni.pc))
+#join to WDI data
+key.ind = join(WDI.key, gni.pc, by = c("year" = "year", "country" = "country"))
+```
+
+#### verify that the number of countries is still the same and that the join worked properly
+```{r}
+sapply(key.ind, function(x) length(unique(x)))
+```
+#### gni.pc has been appeneded to the first dataframe and the unique country count is still 217 
+
+### Repeat for remaining indeces
+```{r}
+#Human Development Index
+hdi <- read.csv("~/Desktop/human_dev_index.csv", na.strings="NULL")
+hdi <- gather(hdi, year, hdi, X1990:X2018, convert = TRUE)
+hdi$year <- gsub('X', '', hdi$year)
+hdi <- transform(hdi, year = as.numeric(year))
+hdi <- transform(hdi, hdi = as.numeric(hdi))
+key.ind = join(key.ind, hdi, by = c("year" = "year", "country" = "country"))
+sapply(key.ind, function(x) length(unique(x)))
+```
+
+```{r}
+#Education Index
+edu.index <- read.csv("~/Desktop/education_index.csv", na.strings="NULL")
+edu.index <- gather(edu.index, year, edu.index, X1990:X2018, convert = TRUE)
+edu.index$year <- gsub('X', '', edu.index$year)
+edu.index <- transform(edu.index, year = as.numeric(year))
+edu.index <- transform(edu.index, edu.index = as.numeric(edu.index))
+key.ind = join(key.ind, edu.index, by = c("year" = "year", "country" = "country"))
+sapply(key.ind, function(x) length(unique(x)))
+```
+
+
+```{r}
+#Income Index
+income.index <- read.csv("~/Desktop/income_index.csv", na.strings="NULL")
+income.index <- gather(income.index, year, income.index, X1990:X2018, convert = TRUE)
+income.index$year <- gsub('X', '', income.index$year)
+income.index <- transform(income.index, year = as.numeric(year))
+income.index <- transform(income.index, income.index = as.numeric(income.index))
+key.ind = join(key.ind, income.index, by = c("year" = "year", "country" = "country"))
+sapply(key.ind, function(x) length(unique(x)))
+```
+
+```{r}
+str(key.ind)
+```
+
+## This final data frame (key.ind) will be used for the next step, exploratory data analysis.
