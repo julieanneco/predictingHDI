@@ -12,7 +12,7 @@ Under Construction
     <li><a href="#Project-Overview">Project Overview</a>
     <li><a href="#Data-Engineering">Data Engineering</a>
     <li><a href="#Exploratory-Data-Analysis">Exploratory Data Analysis</a>
-    <li><a href="Prediction-Models">ML Prediction Models</a>
+    <li><a href="Machine-Learning-Prediction-Models">ML Prediction</a>
           <ul>
           <li><a href="#random-forest-regression">Random Forest Regression</a>
           <li><a href="#random-forest-classification">Random Forest Classification</a>
@@ -313,13 +313,14 @@ F-statistic: 2.279e+04 on 1 and 4676 DF,  p-value: < 2.2e-16
 <br />
 <br />
 
-<!-- Random Forest Regression -->
-## Prediction Models
+<!-- Machine Learning Prediction Models -->
+## Machine-Learning-Prediction-Models
 
 [View the R Markdown file for this step](https://github.com/julieanneco/predictingHDI/blob/main/PredictHDI_Step3_ML.Rmd)
 
 <!-- Random Forest Regression -->
 ### Random Forest Regression
+_______________________________________
 
 The <b>predict.hdi</b> data frame has been cleaned and validated for regression. Using this final data frame that results from steps 1 and 2, I decided to test a random forest prediction model. To begin, I split the data into 2 partitions using the caret package. I chose to partition 90% for training and 10% for testing because I wanted to have as much data to train as possible, though standard partitioning is often around 80/20.
 ```{r}
