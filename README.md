@@ -17,6 +17,8 @@
           <li><a href="#random-forest-regression">Random Forest Regression</a>
           <li><a href="#random-forest-classification">Random Forest Classification</a>
           </ul>
+    <li><a href="#discussion">Discussion</a>
+    <li><a href="#Using-Actual-Indicators">Using Actual Indicators</a>
     <li><a href="#conclusion">Conclusion</a>
     <li><a href="#acknowledgements">Acknowledgements</a>
   </ol>
@@ -382,12 +384,71 @@ The model returned an <b>OOB error rate estimate of 1.84%</b>. Looking at a conf
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/confusion.png?raw=true" alt="confusion matrix" width="280">
 
+<!-- Results -->
+## Discussion
+
+This endeavor offered a basic look into engineering data for exploratory analysis and predicting variables with random forest. Both models predicted with high accuracy despite some of the limitations and challenges inherit to the available data. Interestingly, after achieving these results, I was able to find the actual metrics used by the UNDP to determine HDI. My intital exploration of the data started out vast and was narrowed down after hours and hours of painstaking analysis and testing. While this process was not included in the final outcome, the first 2 steps are the result of making a decision on the direction of the project based on this intital eploration (to predict HDI with highly correlated variables). Working backwards, my final model included many of the actual (or similar) indicators used by the UNDP to determine HDI metric.
+
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/hdi.jpg?raw=true" alt="undp hdi">
+
+In my original model, I ultimately used the UNDP Education Index because education indicators in WDI were too sparse to justify use in this application. Using this index helped immensely in predicting accurately. This is what sparked my interest in seeing how the HDI is actually determined. This curiosity led me to want to re-try the model on the actual indicators used by the UNDP to determine HDI. The final section below will do just that.
+
+
+<!-- Using Actual Indicators -->
+## Using Actual Indicators
+
+This final section takes the actual indicators used by the UNDP to predict HDI based on the aggregated datasets available.
+
+<b>The 4 indicators that make up the Human Development Index:</b>
+  <ol>
+	<li> <i>Life Expectancy at Birth</i>
+		<ul> This indicator was used in the original model. Life expectancy at birth comes from multiple sources and indicates the number of years a newborn infant would live if prevailing patterns of mortality at the time of its birth were to stay the same throughout its life. </ul>
+  	<li> <i>GNI per capita (constant 2010 US$)</i>
+		<ul> GDP per capita was originally used because it showed higher correlation than GNI. GNI per capita is gross national income divided by midyear population. It is the sum of value added by all resident producers plus any product taxes (less subsidies) not included in the valuation of output plus net receipts of primary income (compensation of employees and property income) from abroad. Data are in constant 2010 U.S. dollars.</ul>
+	<li> <i>Expected Years of Schooling</i>
+		<ul>Derived from the UNESCO Institute for Statistics. Number of years of schooling that a child of school entrance age can expect to receive if prevailing patterns of age-specific enrolment rates persist throughout the child’s life.</ul>
+	<li> <i>Mean Years of Schooling</i>
+		<ul> A UNESCO Institute for statistics calculation based on the average number of years of education received by people ages 25 and older in their lifetime based on education attainment levels of the population converted into years of schooling based on theoretical duration of each level of education attended.</ul>
+	</li>
+  </ol>
+
+<b>Create the Data Frame</b>
+After importing the indictors from .csv files and merging and cleaning the data, this is the first few rows of the final data frame for the new model:
+
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/actualdata.png?raw=true" alt="new data frame with actual indicators">
+
+<b>Build the Model</b>
+
+Fit the new data to the same model.  
+
+```{r}
+# Split data into 90% for training and 10% for testing
+set.seed(123)
+hdi.samples <- predict.hdi$hdi %>%
+  createDataPartition(p = 0.9, list = FALSE)
+train.hdi  <- predict.hdi[hdi.samples, ]
+test.hdi <- predict.hdi[-hdi.samples, ]
+# Reset row index on test data (row.names)
+row.names(test.hdi) <- NULL
+# random forest for regression with 500 trees and mtry of 3
+hdi.rf <- randomForest(hdi ~ ., data = train.hdi, ntree=500, mtry = 3, 
+importance = TRUE, na.action = na.omit) 
+print(hdi.rf) 
+# Plot the error vs the number of trees graph 
+plot(hdi.rf) 
+```
+
+<b>Results</b>
+
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/actualresults.png?raw=true" alt="results with actual indicators">
+
+<br />
+
 <!-- Conclusion -->
 ## Conclusion
 
-Both models predict with high accuracy despite some of the limitations and challenges inherit to the available data. While a real-word application would require a far more in-depth look at indicators, this endeavor offered a basic look into predicting variables with random forest. Interestingly, after achieving these results, I was able to find the actual metrics used by the UNDP to determine HDI. The indicators were not too far off from what my analysis found. I did end up using the UNDP Education Index because unfortunately, education indicators in WDI were too sparse to justify use in this application. Using one of the 3 indices that make up HDI did help immensely in predicting accurately. Nonetheless, I was able to uncover many similar or actual indicators used without knowing this information up front and that makes this exploration into the data feel like a success. 
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/compare.png?raw=true" alt="compare results">
 
-<img src="https://github.com/julieanneco/predictingHDI/blob/photos/hdi.jpg?raw=true" alt="undp hdi">
 
 <br />
 
@@ -412,3 +473,5 @@ Both models predict with high accuracy despite some of the limitations and chall
 
 ### References
 Van der Mensbrugghe, Dominique. (2016). Using R to Extract Data from the World Bank's World Development Indicators. <i>Journal of Global Economic Analysis</i>. 1. 251-283. 10.21642/JGEA.010105AF.
+
+UNDP. Human Development Index (HDI).](http://hdr.undp.org/en/content/human-development-index-hdi) http://hdr.undp.org/en/content/human-development-index-hdi
