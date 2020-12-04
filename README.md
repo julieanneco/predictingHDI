@@ -41,6 +41,8 @@ The entire project is coded in R and consists of 3 key steps (each in separate R
 <!-- Data Engineering -->
 ## Data Engineering
 
+[Download the R Markdown file for this step](main/PredictHDI_Step1_DE.Rmd)
+
 <details open="open">
   <summary><b><i>Using the WDI API to scrape indicator data</b></i></summary>
 There are two methods for accessing WDI data. The first is to directly use the World Bank’s web-based graphical user interface (GUI). The second method uses an Application Programming Interface (API). The API has been integrated into an R package that simplifies the extraction process and allows for use of the data directly in R. Each indicator has a vector code that is used for querying and downloading functions within R. There are several ways to find the vector codes for specific indicators or indicators containing a keyword. In R, you can use the WDIsearch() function. You can also use the World Bank data dictionary or GUI report creator to find the vector codes for specific indicators. 
