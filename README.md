@@ -393,6 +393,7 @@ This endeavor offered a basic look into engineering data for exploratory analysi
 
 In my original model, I ultimately used the UNDP Education Index because education indicators in WDI were too sparse to justify use in this application. Using this index helped immensely in predicting accurately. This is what sparked my interest in seeing how the HDI is actually determined. This curiosity led me to want to re-try the model on the actual indicators used by the UNDP to determine HDI. The final section below will do just that.
 
+<br />
 
 <!-- Using Actual Indicators -->
 ## Using Actual Indicators
@@ -413,12 +414,12 @@ This final section takes the actual indicators used by the UNDP to predict HDI b
   </ol>
 
 <b>Create the Data Frame</b>
+
 After importing the indictors from .csv files and merging and cleaning the data, this is the first few rows of the final data frame for the new model:
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/actualdata.png?raw=true" alt="new data frame with actual indicators">
 
 <b>Build the Model</b>
-
 
 Fit the new data to the same model.  
 
