@@ -448,7 +448,7 @@ plot(hdi.rf)
 <!-- Conclusion -->
 ## Conclusion
 
-<img src="https://github.com/julieanneco/predictingHDI/blob/photos/compare.png?raw=true" alt="compare results" width = "400">
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/compare.png?raw=true" alt="compare results" width = "650">
 
 
 <br />
