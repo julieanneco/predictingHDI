@@ -29,9 +29,9 @@ Under Construction
 
 The World Bank has a massive database called the World Development Indicators (WDI). According to the World Bank, the WDI are a "compilation of cross-country, relevant, high-quality, and internationally comparable statistics about global development and the fight against poverty." This data is free and open to the public for use. The WDI database contains a vast array of socioeconomic indicators related to population, GDP, education, health, human rights, labor, trade, land use, and so on. It is used by The WDI is one of the most significant international databases and contains around 1300 indicators for almost every country in the world, with the earliest indicators starting in 1960 (Van Der Mensbrugghe, 2016). 
 
-The United Nations Development Programme (UNDP) collects and stores international data for monitoring and reporting on multiple human development indices, such as poverty, gender equality, sustainability, and so on. This project will focus on prediicting the Human Development Index (HDI). According the the UNDP, "the HDI was created to emphasize that people and their capabilities should be the ultimate criteria for assessing the development of a country, not economic growth alone."
+The United Nations Development Programme (UNDP) collects and stores international data for monitoring and reporting on multiple human development indices, such as poverty, gender equality, sustainability, and so on. This project will focus on predicting the Human Development Index (HDI). According the the UNDP, "the HDI was created to emphasize that people and their capabilities should be the ultimate criteria for assessing the development of a country, not economic growth alone."
 
-The entire project is coded in R and consists of 3 key steps (each in seperate R Markdown files):
+The entire project is coded in R and consists of 3 key steps (each in separate R Markdown files):
 <ol>
   <li><b>Data Engineering:</b> Scraping, merging, cleaning, and transforming data. </li>
   <li><b>Exploratory Data Analysis:</b> Analyzing variables for correlation and regression to build final data frame(s). </li>
@@ -43,7 +43,7 @@ The entire project is coded in R and consists of 3 key steps (each in seperate R
 
 <details open="open">
   <summary><b><i>Using the WDI API to scrape indicator data</b></i></summary>
-There are two methods for accessing WDI data. The first is to directly use the World Bank’s web-based graphical user interface (GUI). The second method uses an Application Programming Interface (API). The API has been integrated into an R package that simplifies the extraction process and allows for use of the data directly in R. Each indicator has a vector code that is used for querying and downloading functions within R. There are several ways to find the vector codes for specfic indicators or indicators containing a keyword. In R, you can use the WDIsearch() function. You can also use the worldbank data dictionary or GUI report creator to find the vector codes for specific indicators. 
+There are two methods for accessing WDI data. The first is to directly use the World Bank’s web-based graphical user interface (GUI). The second method uses an Application Programming Interface (API). The API has been integrated into an R package that simplifies the extraction process and allows for use of the data directly in R. Each indicator has a vector code that is used for querying and downloading functions within R. There are several ways to find the vector codes for specific indicators or indicators containing a keyword. In R, you can use the WDIsearch() function. You can also use the World Bank data dictionary or GUI report creator to find the vector codes for specific indicators. 
 </details>
 
 Once installed, the WDI library is loaded like any standard package.
@@ -60,7 +60,7 @@ dataframe = WDI(indicator= c("vector code","vector code", etc.), country="all", 
 dataframe = WDI(indicator='vector code', country="all", start=year, end=year)
 ```
 
-To download the data for this project, I created individual data frames for each indicator I wanted to analyze. By creating a seperate dataframe for each indicator, I was able to more easily analyze and update each one as needed throughout the process. I selected the years 1990 to 2018 because data in earlier years has more NULL values and included all countries. The following WDI indicators were downloaded:
+To download the data for this project, I created individual data frames for each indicator I wanted to analyze. By creating a separate data frame for each indicator, I was able to more easily analyze and update each one as needed throughout the process. I selected the years 1990 to 2018 because data in earlier years has more NULL values and included all countries. The following WDI indicators were downloaded:
 
 <ul>
       <li>Population
@@ -82,7 +82,7 @@ To download the data for this project, I created individual data frames for each
       <li>Adjusted net enrolment rate, lower secondary
       <li>Adjusted net enrolment rate, primary	
       <li>Adjusted net enrolment rate, upper secondary
-      <li>Adult literacy rate, population 15+ years, both sexes (%)	SE.ADT.LITR.ZS
+      <li>Adult literacy rate, population 15+ years, both sexes (%)
       <li>Initial government funding of education as a percentage of GDP (%)
       <li>Expected Years Of School
 </ul>
@@ -202,7 +202,7 @@ This resulted in the following:
   </tr>
 </table>
 
-I decided to exclude any indicators with more than 15% NULL values. Unfortunatly, this meant I was left without any education indicators. Nonetheless, I joined the individual data frames with less than 15% NULL values to create a single dataframe called <b>WDI.key</b>. I then joined this data frame to the country details in WDI in case I want to analyze at various levels in the future. This is the resulting data frame structure.
+I decided to exclude any indicators with more than 15% NULL values. Unfortunately, this meant I was left without any education indicators. Nonetheless, I joined the individual data frames with less than 15% NULL values to create a single data frame called <b>WDI.key</b>. I then joined this data frame to the country details in WDI in case I want to analyze at various levels in the future. This is the resulting data frame structure.
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/WDI.key.png?raw=true" alt="WDI.key" width="650">
 
@@ -335,22 +335,46 @@ After tuning and testing for out of bag (OOB) error improvement and also looking
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/predictions1.png?raw=true" alt="predictions" width="450">
 
-The average distance of the prediction to the actual HDI is -.0051, which is very impressive given some of the variance in each variable dataset. I created a plot to vizualize the prediction variance for the entire test data. The model seems to predict higher indices better, but only by a nominal amount. 
+The average distance of the prediction to the actual HDI is -.0051, which is very impressive given some of the variance in each variable dataset. I created a plot to visualize the prediction variance for the entire test data. The model seems to predict higher indices better, but only by a nominal amount. 
 
 ![alt text](https://github.com/julieanneco/predictingHDI/blob/photos/RF-R-Results.jpg?raw=true)
 
 <!-- Random Forest Classification -->
 ## Random Forest Classification
 
+The random forest regression had surprisingly strong results, but I decided to also test classification since this is another common use for random forest prediction. To begin, I created 3 categories for HDI (Low, Med, High) and converted this column to a factor with 3 levels and then created an 80/20 partition using caTools, which is another good package for creating partitions. I then fit the model with 500 trees and mtry of 2.
 
-Random Forest Classification
+```{r}
+predict.hdi.2$hdi.cat[predict.hdi.2$hdi < .650 ] = "Low"
+predict.hdi.2$hdi.cat[predict.hdi.2$hdi > .850 ] = "High"
+predict.hdi.2$hdi.cat[is.na(predict.hdi.2$hdi.cat)] <- "Mid"
 
+(predict.hdi.2$hdi.cat = factor(predict.hdi.2$hdi.cat, levels=c("Low", "Mid", "High")))
+
+set.seed(123)
+split = sample.split(predict.hdi.2$hdi.cat, SplitRatio = 0.80)
+hdi.training.set = subset(predict.hdi.2, split == TRUE)
+hdi.test.set = subset(predict.hdi.2, split == FALSE)
+
+hdi.rfc = randomForest(x = hdi.training.set[1:5],
+                        y = hdi.training.set$hdi.cat,
+                        ntree = 500, random_state = 0)
+```
+
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/rfc.png?raw=true" alt="predictions" width="450">
+
+The model returned an <b>OOB error rate estimate of 1.84%</b>. Looking at a confusion matrix shows exactly how well the classification prediction model performed on the test data with an error rate of 1.497
+
+    	   Low	  Mid	 High
+    Low    406    3    	 0
+    Mid    2 	  403    4
+    High   0   	  5  	 112
 
 <!-- Conclusion -->
 
-## Conclusion
+Both models predict with high accuracy despite some of the limitations and challenges inherit to the available data. While a real-word application would require a far more in-depth look at indicators, this endeavor offered a basic look into predicting variables with random forest. Interestingly, after achieving these results, I was able to find the actual metrics used for how the UNDP determines HDI. The indicators were not too far off from what my analysis found. I did end up using the UNDP Education Index because unfortunately, education indicators in WDI were too sparse to justify use. Using one of the 3 indices that make up HDI helped immensely in predicting accurately. Nonetheless, I was able to uncover many similar or actual indicators used without knowing this information up front and that makes this exploration into the data feel like a success. 
 
-
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/hdi.jpg?raw=true" alt="predictions" width="700">
 
 
 <!-- Acknowledgements -->
@@ -360,7 +384,7 @@ Random Forest Classification
 * [World Bank World Development Indicators](https://databank.worldbank.org/source/world-development-indicators)
 * [UNDP Human Development Data](http://hdr.undp.org/en/data)
 
-### Packages Utilized
+### R Packages Utilized
 * [WDI](https://www.rdocumentation.org/packages/WDI/versions/2.7.1)
 * [plyr](https://www.rdocumentation.org/packages/plyr/versions/1.8.6)
 * [tidyr](https://www.rdocumentation.org/packages/tidyr/versions/0.8.3)
@@ -373,4 +397,4 @@ Random Forest Classification
 * [caTools](https://www.rdocumentation.org/packages/caTools/versions/1.17.1)
 
 ### References
-Van der Mensbrugghe, Dominique. (2016). Using R to Extract Data from the World Bank's World Development Indicators. <i>Journal of Global Economic Analysis</i>. 1. 251-283. 10.21642/JGEA.010105AF. 
+Van der Mensbrugghe, Dominique. (2016). Using R to Extract Data from the World Bank's World Development Indicators. <i>Journal of Global Economic Analysis</i>. 1. 251-283. 10.21642/JGEA.010105AF.
