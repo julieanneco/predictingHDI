@@ -419,6 +419,7 @@ After importing the indictors from .csv files and merging and cleaning the data,
 
 <b>Build the Model</b>
 
+
 Fit the new data to the same model.  
 
 ```{r}
@@ -447,7 +448,7 @@ plot(hdi.rf)
 <!-- Conclusion -->
 ## Conclusion
 
-<img src="https://github.com/julieanneco/predictingHDI/blob/photos/compare.png?raw=true" alt="compare results">
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/compare.png?raw=true" alt="compare results" width = "400">
 
 
 <br />
