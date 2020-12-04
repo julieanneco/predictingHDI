@@ -1,0 +1,152 @@
+---
+title: "HDI Prediction Model: Using Actual Indicators"
+author: "Julie Anne Hockensmith"
+date: "12/4/2020"
+output: pdf_document
+---
+
+#### Without any prior knowledge of how the UNDP HDI is determined, my intital exploration of the data started out vast and was narrowed down after hours and hours of painstaking analysis and testing. While this process was not included in the final outcome, the first 2 steps are the result of making a decision on the direction of the project based on this intital eploration (to predict HDI with highly correlated variables). Working backwards, my final model included many of the actual (or similar) indicators used by the UNDP to determine HDI metric. Based on what I have learned from this endeavor, I wanted to take these actual indicators and see how well a prediction model would perform on them. In the last model, I used the final UNDP Education Index to account for the lack of education data in the WDI, wanting a large dataset to start with. This bonus exploration will take the actual indicators used and try to predict HDI based on the aggregated datasets available. I will use UNDP indicators that make up the education index, rather than the index itself.
+
+## The 4 indicators that make up the Human Development Index:
+
+#### Life Expectancy at Birth -- This indicator was used in the original model. Life expectancy at birth comes from multiple sources and indicates the number of years a newborn infant would live if prevailing patterns of mortality at the time of its birth were to stay the same throughout its life. 
+#### GNI per capita (constant 2010 US$) -- GDP per capita was originally used because it showed higher correlation than GNI. GNI per capita is gross national income divided by midyear population. It is the sum of value added by all resident producers plus any product taxes (less subsidies) not included in the valuation of output plus net receipts of primary income (compensation of employees and property income) from abroad. Data are in constant 2010 U.S. dollars.
+#### Expected Years of Schooling - Derived from the UNESCO Institute for Statistics. Number of years of schooling that a child of school entrance age can expect to receive if prevailing patterns of age-specific enrolment rates persist throughout the child’s life.
+#### Mean Years of Schooling - A UNESCO Institute for statistics calculation based on the average number of years of education received by people ages 25 and older in their lifetime based on education attainment levels of the population converted into years of schooling based on theoretical duration of each level of education attended.
+
+## Import and Merge Data
+
+```{r}
+# GNI per capita
+
+# import
+gni.pc <- read.csv("~/Desktop/HDIProject/GNI_pc.csv", na.strings="NULL")
+# use gather function to convert years to a single column to match WDI data
+gni.pc <- gather(gni.pc, year, gni.pc, X1990:X2018, convert = TRUE)
+# convert year from character to numeric
+gni.pc$year <- gsub('X', '', gni.pc$year)
+# convert non-numeric columns to numeric
+gni.pc <- transform(gni.pc, year = as.numeric(year))
+gni.pc <- transform(gni.pc, gni.pc = as.numeric(gni.pc))
+# create data frame to join the rest of the indicators
+predict.hdi = gni.pc
+predict.hdi
+```
+
+```{r}
+# Expected Years of Schooling
+
+exp.edu.years <- read.csv("~/Desktop/HDIProject/exp_edu_years.csv", na.strings="NULL")
+exp.edu.years <- gather(exp.edu.years, year, exp.edu.years, X1990:X2018, convert = TRUE)
+exp.edu.years$year <- gsub('X', '', exp.edu.years$year)
+exp.edu.years <- transform(exp.edu.years, year = as.numeric(year))
+exp.edu.years <- transform(exp.edu.years, exp.edu.years = as.numeric(exp.edu.years))
+predict.hdi = join(predict.hdi, exp.edu.years, by = c("year" = "year", "country" = "country"))
+predict.hdi
+```
+
+```{r}
+# Mean Years of Schooling
+
+mean.edu.years <- read.csv("~/Desktop/HDIProject/mean_edu_years.csv", na.strings="NULL")
+mean.edu.years <- gather(mean.edu.years, year, mean.edu.years, X1990:X2018, convert = TRUE)
+mean.edu.years$year <- gsub('X', '', mean.edu.years$year)
+mean.edu.years <- transform(mean.edu.years, year = as.numeric(year))
+mean.edu.years <- transform(mean.edu.years, mean.edu.years = as.numeric(mean.edu.years))
+predict.hdi = join(predict.hdi, mean.edu.years, by = c("year" = "year", "country" = "country"))
+predict.hdi
+```
+```{r}
+# Life Expectancy at Birth
+
+life.exp <- read.csv("~/Desktop/HDIProject/life_exp.csv", na.strings="NULL")
+life.exp <- gather(life.exp, year, life.exp, X1990:X2018, convert = TRUE)
+life.exp$year <- gsub('X', '', life.exp$year)
+life.exp <- transform(life.exp, year = as.numeric(year))
+life.exp <- transform(life.exp, life.exp = as.numeric(life.exp))
+predict.hdi = join(predict.hdi, life.exp, by = c("year" = "year", "country" = "country"))
+predict.hdi
+```
+
+```{r}
+# Human Development Index (HDI)
+
+#import
+hdi <- read.csv("~/Desktop/HDIProject/human_dev_index.csv", na.strings="NULL")
+#use gather function to convert years to a single column to match WDI data
+hdi <- gather(hdi, year, hdi, X1990:X2018, convert = TRUE)
+#clean up the X in front of the year that happened during import
+hdi$year <- gsub('X', '', hdi$year)
+#convert year from character to numeric
+hdi <- transform(hdi, year = as.numeric(year))
+hdi <- transform(hdi, hdi = as.numeric(hdi))
+predict.hdi = join(predict.hdi, hdi, by = c("year" = "year", "country" = "country"))
+predict.hdi
+```
+
+```{r}
+#removes any rows with nulls
+cc = complete.cases(predict.hdi)
+predict.hdi = predict.hdi[cc,]
+#Remove non-numerical columns
+predict.hdi$country <- NULL 
+predict.hdi$year <- NULL
+predict.hdi
+```
+
+## Supervised Prediction Model
+
+```{r}
+# Split data into 90% for training and 10% for testing
+library(caret)
+set.seed(123)
+hdi.samples <- predict.hdi$hdi %>%
+  createDataPartition(p = 0.9, list = FALSE)
+train.hdi  <- predict.hdi[hdi.samples, ]
+test.hdi <- predict.hdi[-hdi.samples, ]
+# Reset row index on test data (row.names)
+row.names(test.hdi) <- NULL
+```
+
+```{r}
+library(randomForest)
+# random forest for regression with 500 trees and mtry of 3
+hdi.rf <- randomForest(hdi ~ ., data = train.hdi, ntree=500, mtry = 3, 
+						importance = TRUE, na.action = na.omit) 
+print(hdi.rf) 
+# Plot the error vs the number of trees graph 
+plot(hdi.rf) 
+```
+
+```{r}
+# Make predictions 
+hdi.predictions <- hdi.rf %>% predict(test.hdi)
+head(hdi.predictions)
+```
+
+```{r}
+#Calculate prediction error average -- root-mean-square error (RMSE)
+RMSE(hdi.predictions, test.hdi$hdi)
+```
+
+### Join predictions to test table
+```{r}
+# convert predictions to a data frame 
+hdi.pred <- as.data.frame(hdi.predictions)
+# merge on index
+hdi.pred <- merge(test.hdi, hdi.pred, by.x = 0, by.y = 0, all.x = TRUE, all.y = TRUE)
+# create a new calculated column that subtracts the actual hdi by the prediction
+hdi.pred$diff <- with(hdi.pred, hdi.pred$hdi.predictions - hdi.pred$hdi)
+# get the mean of the difference
+mean(hdi.pred[,"diff"])
+hdi.pred
+```
+
+### Plot predictions versus actual human development index
+```{r}
+# Sort data
+hdi.pred <- hdi.pred[order(hdi.pred$hdi),]
+# Plot both lines to see error
+plot(hdi.pred$hdi.predictions,type = "l", col="red",xlab="Tested Data", ylab="Actual vs. Predicted", main="Prediction Variance") +
+  lines(hdi.pred$hdi, lwd=2)
+```
