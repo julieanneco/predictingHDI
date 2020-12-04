@@ -39,6 +39,7 @@ The entire project is coded in R and consists of 3 key steps (each in separate R
   <li><b>Building a Prediction Model:</b> Using final variables to build a random forest prediction model.</li>
 </ol>
 
+<br />
 
 <!-- Data Engineering -->
 ## Data Engineering
@@ -388,6 +389,7 @@ Both models predict with high accuracy despite some of the limitations and chall
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/hdi.jpg?raw=true" alt="undp hdi">
 
 <br />
+
 <!-- Acknowledgements -->
 ## Acknowledgements
 
