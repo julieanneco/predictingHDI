@@ -365,16 +365,13 @@ hdi.rfc = randomForest(x = hdi.training.set[1:5],
 
 The model returned an <b>OOB error rate estimate of 1.84%</b>. Looking at a confusion matrix shows exactly how well the classification prediction model performed on the test data with an error rate of 1.497
 
-    	   Low	  Mid	 High
-    Low    406    3    	 0
-    Mid    2 	  403    4
-    High   0   	  5  	 112
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/confusion.png?raw=true" alt="confusion matrix" width="300">
 
 <!-- Conclusion -->
 
 Both models predict with high accuracy despite some of the limitations and challenges inherit to the available data. While a real-word application would require a far more in-depth look at indicators, this endeavor offered a basic look into predicting variables with random forest. Interestingly, after achieving these results, I was able to find the actual metrics used for how the UNDP determines HDI. The indicators were not too far off from what my analysis found. I did end up using the UNDP Education Index because unfortunately, education indicators in WDI were too sparse to justify use. Using one of the 3 indices that make up HDI helped immensely in predicting accurately. Nonetheless, I was able to uncover many similar or actual indicators used without knowing this information up front and that makes this exploration into the data feel like a success. 
 
-<img src="https://github.com/julieanneco/predictingHDI/blob/photos/hdi.jpg?raw=true" alt="predictions" width="700">
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/hdi.jpg?raw=true" alt="undp hdi">
 
 
 <!-- Acknowledgements -->
