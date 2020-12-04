@@ -28,7 +28,7 @@
 <!-- Project Overview -->
 ## Project Overview
 
-The World Bank has a massive database called the World Development Indicators (WDI). According to the World Bank, the WDI are a "compilation of cross-country, relevant, high-quality, and internationally comparable statistics about global development and the fight against poverty." This data is free and open to the public for use. The WDI database contains a vast array of socioeconomic indicators related to population, GDP, education, health, human rights, labor, trade, land use, and so on. It is used by The WDI is one of the most significant international databases and contains around 1300 indicators for almost every country in the world, with the earliest indicators starting in 1960 (Van Der Mensbrugghe, 2016). 
+The World Bank has a large database called the World Development Indicators (WDI). According to the World Bank, the WDI are a "compilation of cross-country, relevant, high-quality, and internationally comparable statistics about global development and the fight against poverty." This data is free and open to the public for use. The WDI database contains a vast array of socioeconomic indicators related to population, GDP, education, health, human rights, labor, trade, land use, and so on. The WDI is one of the most significant international databases and contains around 1300 indicators for almost every country in the world, with the earliest indicators starting in 1960 (Van Der Mensbrugghe, 2016). 
 
 The United Nations Development Programme (UNDP) collects and stores international data for monitoring and reporting on multiple human development indices, such as poverty, gender equality, sustainability, and so on. This project will focus on predicting the Human Development Index (HDI). According the the UNDP, "the HDI was created to emphasize that people and their capabilities should be the ultimate criteria for assessing the development of a country, not economic growth alone."
 
@@ -36,7 +36,7 @@ The entire project is coded in R and consists of 3 key steps (each in separate R
 <ol>
   <li><b>Data Engineering:</b> Scraping, merging, cleaning, and transforming data. </li>
   <li><b>Exploratory Data Analysis:</b> Analyzing variables for correlation and regression to build final data frame(s). </li>
-  <li><b>Building a Prediction Model:</b> Using final variables to build a random forest prediction model.</li>
+  <li><b>Prediction with Machine Learning:</b> Using the final variables to build 2 random forest models (regression and classisfication).</li>
 </ol>
 
 <br />
@@ -48,24 +48,25 @@ The entire project is coded in R and consists of 3 key steps (each in separate R
 
 <details open="open">
   <summary><b><i>Using the WDI API to scrape indicator data</b></i></summary>
-There are two methods for accessing WDI data. The first is to directly use the World Bank’s web-based graphical user interface (GUI). The second method uses an Application Programming Interface (API). The API has been integrated into an R package that simplifies the extraction process and allows for use of the data directly in R. Each indicator has a vector code that is used for querying and downloading functions within R. There are several ways to find the vector codes for specific indicators or indicators containing a keyword. In R, you can use the WDIsearch() function. You can also use the World Bank data dictionary or GUI report creator to find the vector codes for specific indicators. 
+There are two methods for accessing WDI data. The first is to build a report using the World Bank’s web-based graphical user interface (GUI) and downloading the query results. The second method uses an Application Programming Interface (API). The API has been integrated into an R package that simplifies the extraction process and allows for download and use of the data directly in R. Each indicator has a vector code that is used for querying and downloading functions within R. There are several ways to find the vector codes for specific indicators or indicators containing a keyword. In R, the WDIsearch() function will population any indicator in a keyword search. There is also a [metadata glossary](https://databank.worldbank.org/metadataglossary/World-Development-Indicators/series) with detailed information and vector codes for all indicators. 
 </details>
 
-Once installed, the WDI library is loaded like any standard package.
+The WDI library is installed and loaded like any standard package:
 ```r
+install.packages("WDI")
 library(WDI)
 ```
 
-WDI function to access and download data
+The WDI function to access and download data:
 ```r
-# download multiple indicators into a single data frame
+# download multiple indicators into one data frame
 dataframe = WDI(indicator= c("vector code","vector code", etc.), country="all", start=year, end=year)
 
 # download a single indicator into a data frame
 dataframe = WDI(indicator='vector code', country="all", start=year, end=year)
 ```
 
-To download the data for this project, I created individual data frames for each indicator I wanted to analyze. By creating a separate data frame for each indicator, I was able to more easily analyze and update each one as needed throughout the process. I selected the years 1990 to 2018 because data in earlier years has more NULL values and included all countries. The following WDI indicators were downloaded:
+To download data for this project, I first created individual data frames for each indicator I wanted to analyze. By creating a separate data frame for each indicator, I was able to more easily analyze and update each one as needed throughout the process. I included all countries and selected the years 1990 to 2018 because data in earlier years has more NULL values. The following WDI indicators were downloaded:
 
 <ul>
       <li>Population
@@ -207,7 +208,7 @@ This resulted in the following:
   </tr>
 </table>
 
-I decided to exclude any indicators with more than 15% NULL values. Unfortunately, this meant I was left without any education indicators. Nonetheless, I joined the individual data frames with less than 15% NULL values to create a single data frame called <b>WDI.key</b>. I then joined this data frame to the country details in WDI in case I want to analyze at various levels in the future. This is the resulting data frame structure.
+I decided to exclude any indicators with more than 15% NULL values. Unfortunately, this meant I was left without any education indicators. Nonetheless, I joined the individual data frames with less than 15% NULL values to create a single data frame called <b>WDI.key</b>. I then joined this data frame to the country details in WDI in case I wanted ro needed to analyze at various levels in the future. This is the resulting data frame structure.
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/WDI.key.png?raw=true" alt="WDI.key" width="650">
 
@@ -244,11 +245,11 @@ corrplot(Matrix, type="upper", order="hclust", method="pie",
 ```
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/matrix1.png?raw=true" alt="Correlation Matrix" width="650">
 
-The strength of the correlation is indicated by the pies. Blue indicates a positive correlation and red indicated a negative correlation. It is easy to see variables with strong correlation to HDI and I have outlined each of them. Using only these variables, I can now take a deeper look at the regression. I created a data frame <b>predict.hdi</b> to further narrow down the data that will be used for building a prediction model. Looking at a matrix of scatterplots, there is clear regression within the variables. 
+The strength of the correlation is indicated by the pies. Blue indicates a positive correlation and red indicates a negative correlation. It is easy to see variables with strong correlation to HDI and I have outlined each of them. Using only these variables, I then took a deeper look at the regression. I created a data frame <b>predict.hdi</b> to further narrow down the data that will be used for building a prediction model. Looking at a matrix of scatterplots, there is obvious regression to HDI for the variables selected.
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/matrix2.png?raw=true" alt="Scatterplot Matrix" width="650">
 
-Individually, each variable has strong linear regression and low p-values. The only variable with more of an exponential trend is GDP Per Capita. For the model, I removed outliers, but chose to include this variable because GDP, while not the only factor, can be a key indicator in determining human development. 
+Individually, each variable shows strong linear regression and low p-values. The only variable with more of an exponential trend is GDP Per Capita. For the final model, I explored outliers and ultimately chose to include GDP per captia because, while not the only factor, it is a key economic development indicator. 
 
 <img align="left" src="https://github.com/julieanneco/predictingHDI/blob/photos/birth.png?raw=true" alt="birth rate" width="350">
 <br />
@@ -326,7 +327,7 @@ F-statistic: 2.279e+04 on 1 and 4676 DF,  p-value: < 2.2e-16
 <!-- Random Forest Regression -->
 ## Random Forest Regression
 
-The <b>predict.hdi</b> data frame has been cleaned and validated for regression. Using this final data frame that results from steps 1 and 2, I decided to test a random forest prediction model. To begin, I split the data into 2 partitions using the caret package. I chose to partition 90% for training and 10% for testing because I wanted to have as much data to train as possible, though standard partitioning is often around 80/20.
+The <b>predict.hdi</b> data frame has been cleaned and validated for regression. Using this final data frame that resulted from steps 1 and 2, I decided to test a random forest prediction model. To begin, I split the data into 2 partitions using the caret package. I chose to partition 90% for training and 10% for testing because I wanted to have as much data to train as possible, though standard partitioning is often around 80/20.
 ```{r}
 set.seed(123)
 hdi.samples <- predict.hdi$hdi %>%
@@ -335,7 +336,7 @@ train.hdi  <- predict.hdi[hdi.samples, ]
 test.hdi <- predict.hdi[-hdi.samples, ]
 ```
 
-Using the randomForect package, I fit a basic random forest regression model with 500 trees and a mtry of 3. I then plotted the error versus the number of trees.
+Using the randomForest package, I fit a basic random forest regression model with 500 trees and a mtry of 3. I then plotted the error versus the number of trees.
 ```{r}
 hdi.rf.1 <- randomForest(hdi ~ ., data = train.hdi, ntree=500, mtry = 3, 
 						importance = TRUE, na.action = na.omit) 
@@ -345,18 +346,18 @@ plot(hdi.rf.1)
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/trees.png?raw=true" alt="errors" width="500">
 
-After tuning and testing for out of bag (OOB) error improvement and also looking at the significance of each variable for possible mean changes, I determined the original model was still the best fit with a <b>root-mean square error of .0087</b> and <b>explained variance of 99.76%</b>, which both indicate a highly valid fit. Moving forward with this model, I made predictions on the test data, converted the predictions to a data frame and merged them with the original test data to see a side-by-side comparison. This sample shows just how close the prediction model gets to the actual human development index based on the variables used in the random forest training.
+After tuning and testing for out of bag (OOB) error improvement and also looking at the significance of each variable for possible mean changes, I determined the original model was still the best fit with a <b>root-mean square error of .0087</b> and an <b>explained variance of 99.76%</b>, which both indicate a highly valid fit. Moving forward with this model, I made predictions on the test data, converted the predictions to a data frame, and merged them with the original test data to see a side-by-side comparison. This sample shows just how close the prediction model gets to the actual human development index based on the variables used in the random forest training.
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/predictions1.png?raw=true" alt="predictions" width="450">
 
-The average distance of the prediction to the actual HDI is -.0051, which is very impressive given some of the variance in each variable dataset. I created a plot to visualize the prediction variance for the entire test data. The model seems to predict higher indices better, but only by a nominal amount. 
+The mean distance of the prediction to the actual HDI is -.0051, which is very impressive given some of the variance in each variable dataset. I created a plot to visualize the prediction variance for the entire test data. The model seems to predict higher indices better, but only by a nominal amount. 
 
 ![alt text](https://github.com/julieanneco/predictingHDI/blob/photos/RF-R-Results.jpg?raw=true)
 
 <!-- Random Forest Classification -->
 ## Random Forest Classification
 
-The random forest regression had surprisingly strong results, but I decided to also test classification since this is another common use for random forest prediction. To begin, I created 3 categories for HDI (Low, Med, High) and converted this column to a factor with 3 levels and then created an 80/20 partition using caTools, which is another good package for creating partitions. I then fit the model with 500 trees and mtry of 2.
+The random forest regression had surprisingly strong results, but I decided to also test classification since this is another common use for random forest prediction. To begin, I created 3 categories for HDI (Low, Med, High) and converted this column to a factor with 3 levels and then created an 80/20 partition using caTools, which is another package for creating partitions. I then fit the model with 500 trees and mtry of 2.
 
 ```{r}
 predict.hdi.2$hdi.cat[predict.hdi.2$hdi < .650 ] = "Low"
@@ -371,20 +372,20 @@ hdi.training.set = subset(predict.hdi.2, split == TRUE)
 hdi.test.set = subset(predict.hdi.2, split == FALSE)
 
 hdi.rfc = randomForest(x = hdi.training.set[1:5],
-                        y = hdi.training.set$hdi.cat,
-                        ntree = 500, random_state = 0)
+y = hdi.training.set$hdi.cat,
+ntree = 500, random_state = 0)
 ```
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/rfc.png?raw=true" alt="predictions" width="650">
 
-The model returned an <b>OOB error rate estimate of 1.84%</b>. Looking at a confusion matrix shows exactly how well the classification prediction model performed on the test data with an error rate of 1.497
+The model returned an <b>OOB error rate estimate of 1.84%</b>. Looking at a confusion matrix reveals just how well the classification prediction model performed on the test data with an error rate of 1.497.
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/confusion.png?raw=true" alt="confusion matrix" width="280">
 
 <!-- Conclusion -->
 ## Conclusion
 
-Both models predict with high accuracy despite some of the limitations and challenges inherit to the available data. While a real-word application would require a far more in-depth look at indicators, this endeavor offered a basic look into predicting variables with random forest. Interestingly, after achieving these results, I was able to find the actual metrics used for how the UNDP determines HDI. The indicators were not too far off from what my analysis found. I did end up using the UNDP Education Index because unfortunately, education indicators in WDI were too sparse to justify use. Using one of the 3 indices that make up HDI helped immensely in predicting accurately. Nonetheless, I was able to uncover many similar or actual indicators used without knowing this information up front and that makes this exploration into the data feel like a success. 
+Both models predict with high accuracy despite some of the limitations and challenges inherit to the available data. While a real-word application would require a far more in-depth look at indicators, this endeavor offered a basic look into predicting variables with random forest. Interestingly, after achieving these results, I was able to find the actual metrics used by the UNDP to determine HDI. The indicators were not too far off from what my analysis found. I did end up using the UNDP Education Index because unfortunately, education indicators in WDI were too sparse to justify use in this application. Using one of the 3 indices that make up HDI did help immensely in predicting accurately. Nonetheless, I was able to uncover many similar or actual indicators used without knowing this information up front and that makes this exploration into the data feel like a success. 
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/hdi.jpg?raw=true" alt="undp hdi">
 
