@@ -12,7 +12,7 @@ ________________________________
     <li><a href="#Project-Overview">Project Overview</a>
     <li><a href="#Data-Engineering">Data Engineering</a>
     <li><a href="#Exploratory-Data-Analysis">Exploratory Data Analysis</a>
-    <li><a href="Machine-Learning-Prediction-Models">ML Prediction</a>
+    <li><a href="Machine-Learning">Machine Learning</a>
           <ul>
           <li><a href="#random-forest-regression">Random Forest Regression</a>
           <li><a href="#random-forest-classification">Random Forest Classification</a>
@@ -229,7 +229,9 @@ After a bit of clean up, joining the UNDP data to the WDI.key data frame, and va
 
 [View the R Markdown file for this step](https://github.com/julieanneco/predictingHDI/blob/main/PredictHDI_Step2_EDA.Rmd)
 
+
 <b>Correlation Matrix</b>
+
 To begin analysis, I removed any rows with NULL values and all non-numerical columns from the key.ind data frame in order to create a correlation matrix. This matrix allowed me to understand variables that highly correlated to the Human Development Index (HDI). For the correlation matrix, I used the corrplot and color brewer packages.
 
 ```r
@@ -313,8 +315,8 @@ F-statistic: 2.279e+04 on 1 and 4676 DF,  p-value: < 2.2e-16
 <br />
 <br />
 
-<!-- Machine Learning Prediction Models -->
-# Machine Learning Prediction Models
+<!-- Machine Learning -->
+# Machine Learning
 
 [View the R Markdown file for this step](https://github.com/julieanneco/predictingHDI/blob/main/PredictHDI_Step3_ML.Rmd)
 
