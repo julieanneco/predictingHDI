@@ -361,11 +361,11 @@ hdi.rfc = randomForest(x = hdi.training.set[1:5],
                         ntree = 500, random_state = 0)
 ```
 
-<img src="https://github.com/julieanneco/predictingHDI/blob/photos/rfc.png?raw=true" alt="predictions" width="450">
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/rfc.png?raw=true" alt="predictions" width="650">
 
 The model returned an <b>OOB error rate estimate of 1.84%</b>. Looking at a confusion matrix shows exactly how well the classification prediction model performed on the test data with an error rate of 1.497
 
-<img src="https://github.com/julieanneco/predictingHDI/blob/photos/confusion.png?raw=true" alt="confusion matrix" width="300">
+<img src="https://github.com/julieanneco/predictingHDI/blob/photos/confusion.png?raw=true" alt="confusion matrix" width="280">
 
 <!-- Conclusion -->
 
