@@ -448,6 +448,8 @@ plot(hdi.rf)
 <!-- Conclusion -->
 ## Conclusion
 
+The actutal indicators predict even better, which is no suprise. What does feel like an accomplishment is how closely the orignal model also predicts the HDI. As stated in the project overview, the Human Development Indicator is meant to emphasize that people should be the ultimate criteria for assessing development, rather than economic growth alone. My assumption as to why the original prediction results based on regression are so close to the actual indicators is inherent of the relationship between the variables themselves (GNI and GDP, birth rate, infant mortality, and life expectancy). The interconnected nature of global development provides insight into what factors shed light into how we might continue to reduce poverty based on multiple dimensions that are economic, human, environmental, and so on.
+
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/compare.png?raw=true" alt="compare results" width = "650">
 
 
