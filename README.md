@@ -1,7 +1,7 @@
 # Predicting the Human Development Index
-Under Construction
 
 ### <i>Building a supervised random forest machine learning model to predict the Human Development Index (HDI) by utilizing the World Bank's World Development Indicators (WDI) and UNDP Human Development Data.</i>
+________________________________
 <br />
 
 <img align="right" src="https://github.com/julieanneco/predictingHDI/blob/photos/world.png?raw=true" alt="world map" width="500">
@@ -314,13 +314,12 @@ F-statistic: 2.279e+04 on 1 and 4676 DF,  p-value: < 2.2e-16
 <br />
 
 <!-- Machine Learning Prediction Models -->
-## Machine-Learning-Prediction-Models
+# Machine Learning Prediction Models
 
 [View the R Markdown file for this step](https://github.com/julieanneco/predictingHDI/blob/main/PredictHDI_Step3_ML.Rmd)
 
 <!-- Random Forest Regression -->
-### Random Forest Regression
-_______________________________________
+## Random Forest Regression
 
 The <b>predict.hdi</b> data frame has been cleaned and validated for regression. Using this final data frame that results from steps 1 and 2, I decided to test a random forest prediction model. To begin, I split the data into 2 partitions using the caret package. I chose to partition 90% for training and 10% for testing because I wanted to have as much data to train as possible, though standard partitioning is often around 80/20.
 ```{r}
@@ -350,7 +349,7 @@ The average distance of the prediction to the actual HDI is -.0051, which is ver
 ![alt text](https://github.com/julieanneco/predictingHDI/blob/photos/RF-R-Results.jpg?raw=true)
 
 <!-- Random Forest Classification -->
-### Random Forest Classification
+## Random Forest Classification
 
 The random forest regression had surprisingly strong results, but I decided to also test classification since this is another common use for random forest prediction. To begin, I created 3 categories for HDI (Low, Med, High) and converted this column to a factor with 3 levels and then created an 80/20 partition using caTools, which is another good package for creating partitions. I then fit the model with 500 trees and mtry of 2.
 
