@@ -41,7 +41,7 @@ The entire project is coded in R and consists of 3 key steps (each in separate R
 <!-- Data Engineering -->
 ## Data Engineering
 
-[Download the R Markdown file for this step](main/PredictHDI_Step1_DE.Rmd)
+[View the R Markdown file for this step](https://github.com/julieanneco/predictingHDI/blob/main/PredictHDI_Step1_DE.Rmd)
 
 <details open="open">
   <summary><b><i>Using the WDI API to scrape indicator data</b></i></summary>
