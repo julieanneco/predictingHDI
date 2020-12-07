@@ -333,7 +333,7 @@ The <b>predict.hdi</b> data frame has been cleaned and validated for regression.
 ```{r}
 set.seed(123)
 hdi.samples <- predict.hdi$hdi %>%
-  createDataPartition(p = 0.9, list = FALSE)
+	createDataPartition(p = 0.9, list = FALSE)
 train.hdi  <- predict.hdi[hdi.samples, ]
 test.hdi <- predict.hdi[-hdi.samples, ]
 ```
@@ -341,7 +341,7 @@ test.hdi <- predict.hdi[-hdi.samples, ]
 Using the randomForest package, I fit a basic random forest regression model with 500 trees and a mtry of 3. I then plotted the error versus the number of trees.
 ```{r}
 hdi.rf.1 <- randomForest(hdi ~ ., data = train.hdi, ntree=500, mtry = 3, 
-						importance = TRUE, na.action = na.omit) 
+	importance = TRUE, na.action = na.omit) 
 print(hdi.rf.1) 
 plot(hdi.rf.1) 
 ```
