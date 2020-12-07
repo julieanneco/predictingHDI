@@ -38,7 +38,7 @@ The entire project is coded in R and consists of 3 key steps (each in separate R
 <ol>
   <li><b>Data Engineering:</b> Scraping, merging, cleaning, and transforming data. </li>
   <li><b>Exploratory Data Analysis:</b> Analyzing variables for correlation and regression to build final data frame(s). </li>
-  <li><b>Prediction with Machine Learning:</b> Using the final variables to build 2 random forest models (regression and classisfication).</li>
+  <li><b>Prediction with Machine Learning:</b> Using the final variables to build 2 random forest models (regression and classification).</li>
 </ol>
 
 <br />
