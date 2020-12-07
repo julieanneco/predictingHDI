@@ -32,7 +32,7 @@
 
 The World Bank has a large database called the World Development Indicators (WDI). According to the World Bank, the WDI are a "compilation of cross-country, relevant, high-quality, and internationally comparable statistics about global development and the fight against poverty." This data is free and open to the public for use. The WDI database contains a vast array of socioeconomic indicators related to population, GDP, education, health, human rights, labor, trade, land use, and so on. The WDI is one of the most significant international databases and contains around 1300 indicators for almost every country in the world, with the earliest indicators starting in 1960 (Van Der Mensbrugghe, 2016). 
 
-The United Nations Development Programme (UNDP) collects and stores international data for monitoring and reporting on multiple human development indices, such as poverty, gender equality, sustainability, and so on. This project will focus on predicting the Human Development Index (HDI). According the the UNDP, "the HDI was created to emphasize that people and their capabilities should be the ultimate criteria for assessing the development of a country, not economic growth alone."
+The United Nations Development Programme (UNDP) collects and stores international data for monitoring and reporting on multiple human development indices, such as poverty, gender equality, sustainability, and so on. This project will focus on predicting the Human Development Index (HDI). According to the UNDP, "the HDI was created to emphasize that people and their capabilities should be the ultimate criteria for assessing the development of a country, not economic growth alone."
 
 The entire project is coded in R and consists of 3 key steps (each in separate R Markdown files):
 <ol>
@@ -210,7 +210,7 @@ This resulted in the following:
   </tr>
 </table>
 
-I decided to exclude any indicators with more than 15% NULL values. Unfortunately, this meant I was left without any education indicators. Nonetheless, I joined the individual data frames with less than 15% NULL values to create a single data frame called <b>WDI.key</b>. I then joined this data frame to the country details in WDI in case I wanted ro needed to analyze at various levels in the future. This is the resulting data frame structure.
+I decided to exclude any indicators with more than 15% NULL values. Unfortunately, this meant I was left without any education indicators. Nonetheless, I joined the individual data frames with less than 15% NULL values to create a single data frame called <b>WDI.key</b>. I then joined this data frame to the country details in WDI in case I wanted or needed to analyze at various levels in the future. This is the resulting data frame structure.
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/WDI.key.png?raw=true" alt="WDI.key" width="650">
 
@@ -251,7 +251,7 @@ The strength of the correlation is indicated by the pies. Blue indicates a posit
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/matrix2.png?raw=true" alt="Scatterplot Matrix" width="650">
 
-Individually, each variable shows strong linear regression and low p-values. The only variable with more of an exponential trend is GDP Per Capita. For the final model, I explored outliers and ultimately chose to include GDP per captia because, while not the only factor, it is a key economic development indicator. 
+Individually, each variable shows strong linear regression and low p-values. The only variable with more of an exponential trend is GDP Per Capita. For the final model, I explored outliers and ultimately chose to include GDP per capita because, while not the only factor, it is a key economic development indicator. 
 
 <img align="left" src="https://github.com/julieanneco/predictingHDI/blob/photos/birth.png?raw=true" alt="birth rate" width="350">
 <br />
@@ -387,7 +387,7 @@ The model returned an <b>OOB error rate estimate of 1.84%</b>. Looking at a conf
 <!-- Results -->
 ## Discussion
 
-This endeavor offered a basic look into engineering data for exploratory analysis and predicting variables with random forest. Both models predicted with high accuracy despite some of the limitations and challenges inherit to the available data. Interestingly, after achieving these results, I was able to find the actual metrics used by the UNDP to determine HDI. My intital exploration of the data started out vast and was narrowed down after hours and hours of painstaking analysis and testing. While this process was not included in the final outcome, the first 2 steps are the result of making a decision on the direction of the project based on this intital eploration (to predict HDI with highly correlated variables). Working backwards, my final model included many of the actual (or similar) indicators used by the UNDP to determine HDI metric.
+This endeavor offered a basic look into engineering data for exploratory analysis and predicting variables with random forest. Both models predicted with high accuracy despite some of the limitations and challenges inherit to the available data. Interestingly, after achieving these results, I was able to find the actual metrics used by the UNDP to determine HDI. My initial exploration of the data started out vast and was narrowed down after hours and hours of painstaking analysis and testing. While this process was not included in the final snapshot, the first 2 steps are the result of deciding on the direction of the project based on this initial exploration (to predict HDI with highly correlated variables). Working backwards, my final model included many of the actual (or similar) indicators used by the UNDP to determine HDI metric.
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/hdi.jpg?raw=true" alt="undp hdi">
 
@@ -449,7 +449,7 @@ plot(hdi.rf)
 <!-- Conclusion -->
 ## Conclusion
 
-The actutal indicators predict even better, which is no suprise. What does feel like an accomplishment is how closely the orignal model also predicts the HDI. As stated in the project overview, the Human Development Indicator is meant to emphasize that people should be the ultimate criteria for assessing development, rather than economic growth alone. My assumption as to why the original prediction results based on regression are so close to the actual indicators is inherent of the relationship between the variables themselves (GNI and GDP, birth rate, infant mortality, and life expectancy). The interconnected nature of global development provides insight into what factors shed light into how we might continue to reduce poverty based on multiple dimensions that are economic, human, environmental, and so on.
+The actual indicators predict even better, which is no surprise. What does feel like an accomplishment is how closely the original model also predicts the HDI. As stated in the project overview, the Human Development Indicator is meant to emphasize that people should be the ultimate criteria for assessing development, rather than economic growth alone. My assumption as to why the original prediction results based on regression are so close to the actual indicators is inherent of the relationship between the variables themselves (GNI and GDP, birth rate, infant mortality, and life expectancy). The interconnected nature of global development provides insight into what factors shed light into how we might continue to reduce poverty based on multiple dimensions that are economic, human, environmental, and so on.
 
 <img src="https://github.com/julieanneco/predictingHDI/blob/photos/compare.png?raw=true" alt="compare results" width = "650">
 
