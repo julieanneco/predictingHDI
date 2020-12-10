@@ -34,12 +34,12 @@ The World Bank has a large database called the World Development Indicators (WDI
 
 The United Nations Development Programme (UNDP) collects and stores international data for monitoring and reporting on multiple human development indices, such as poverty, gender equality, sustainability, and so on. This project will focus on predicting the Human Development Index (HDI). According to the UNDP, "the HDI was created to emphasize that people and their capabilities should be the ultimate criteria for assessing the development of a country, not economic growth alone."
 
-The entire project is coded in R and consists of 3 key steps (each in separate R Markdown files):
+The entire project is coded in R and consists of 4 key steps (each in separate R Markdown files):
 <ol>
   <li><b>Data Engineering:</b> Scraping, merging, cleaning, and transforming data. </li>
   <li><b>Exploratory Data Analysis:</b> Analyzing variables for correlation and regression to build final data frame(s). </li>
   <li><b>Prediction with Machine Learning:</b> Using the final variables to build 2 random forest models (regression and classification).</li>
-  <li><b><i>Bonus:</b> Using actual indicators.</i></li>
+  <li><b><i>Bonus:</b> Using true indicators to predict HDI.</i></li>
 	
 </ol>
 
@@ -399,6 +399,9 @@ In my original model, I ultimately used the UNDP Education Index because educati
 
 <!-- Using Actual Indicators -->
 ## Using Actual Indicators
+
+[View the R Markdown file for this step](https://github.com/julieanneco/predictingHDI/blob/main/PredictHDI_Actual_Ind.Rmd)
+
 
 This final section takes the actual indicators used by the UNDP to predict HDI based on the aggregated datasets available.
 
